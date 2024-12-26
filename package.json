@@ -18,8 +18,16 @@
   "license": "ISC",
   "author": "George Chatzopoulos, Aris Zananiri, Dimitris Kaltsios, Sudak Yaroslav, Nikos Tampakis",
   "type": "commonjs",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0",
+    "sequelize": "^6.37.5"
   }
 }

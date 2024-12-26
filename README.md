@@ -42,7 +42,7 @@ SHOW DATABASES;
 
 Source: MySQL 8.0 Reference Manual. "Chapter 2 Connecting to and Disconnecting from the Server" in "MySQL Tutorial" pp. 2-9.
 
-## ENVIRONMENT VARIABLES
+## Environment Variables
 - Create a `.env` file in your root directory
 - Paste the following code:
 ```env
@@ -57,3 +57,21 @@ PORT=<your_port_number>
 - Change  `<your_database_username>` to your mysql username (the username after the `-u` flag in the `mysql -h host -u user -p` command).
 - Change `<your_database_password>` to your database password.
 - Change `<your_port_number>` to a valid port number (for example: 3000).
+
+## Database Syncronisation
+- Run the following command:
+```bash
+node src/sync.js
+```
+
+If successful, this should be the result of the prompt:
+```bash
+node src/sync.js
+Executing (default): DROP TABLE IF EXISTS `Users`;
+Executing (default): SELECT CONSTRAINT_NAME as constraint_name,CONSTRAINT_NAME as constraintName,CONSTRAINT_SCHEMA as constraintSchema,CONSTRAINT_SCHEMA as constraintCatalog,TABLE_NAME as tableName,TABLE_SCHEMA as tableSchema,TABLE_SCHEMA as tableCatalog,COLUMN_NAME as columnName,REFERENCED_TABLE_SCHEMA as referencedTableSchema,REFERENCED_TABLE_SCHEMA as referencedTableCatalog,REFERENCED_TABLE_NAME as referencedTableName,REFERENCED_COLUMN_NAME as referencedColumnName FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_NAME = 'Users' AND CONSTRAINT_NAME!='PRIMARY' AND CONSTRAINT_SCHEMA='cloud' AND REFERENCED_TABLE_NAME IS NOT NULL;
+Executing (default): DROP TABLE IF EXISTS `Users`;
+Executing (default): DROP TABLE IF EXISTS `Users`;
+Executing (default): CREATE TABLE IF NOT EXISTS `Users` (`id` INTEGER auto_increment , `name` VARCHAR(255) NOT NULL, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+Executing (default): SHOW INDEX FROM `Users`
+Database synchronized successfully.
+```
