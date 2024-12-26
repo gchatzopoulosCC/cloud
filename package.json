@@ -1,0 +1,25 @@
+{
+  "name": "cloud",
+  "version": "1.0.0",
+  "description": "Cloud Storage Simulator for the Web Technologies assessment",
+  "keywords": [
+    "minIO",
+    "cloud",
+    "storage"
+  ],
+  "homepage": "https://github.com/gchatzopoulosCC/cloud#readme",
+  "bugs": {
+    "url": "https://github.com/gchatzopoulosCC/cloud/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gchatzopoulosCC/cloud.git"
+  },
+  "license": "ISC",
+  "author": "George Chatzopoulos, Aris Zananiri, Dimitris Kaltsios, Sudak Yaroslav, Nikos Tampakis",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  }
+}
