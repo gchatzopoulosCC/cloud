@@ -1,7 +1,7 @@
 /* Sync models with database */
 
 const sequelize = require('./db');
-require('./models/userModels');
+require('./models/userModel');
 
 sequelize.sync({force: true})
 .then(() => {
