@@ -43,10 +43,6 @@ class UserService {
         await userModel.destroy({ where: { id } });
         return `User ${id} was deleted successfully`;
     }
-
-    async getByEmail(email) {
-        return userModel.findOne({ where: { email } });
-    }
 }
 
 module.exports = new UserService();

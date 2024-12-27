@@ -4,3 +4,6 @@ express
 mysql2
 body-parser
 sequelize
+swagger-jsdoc
+swagger-ui-express
+yamljs

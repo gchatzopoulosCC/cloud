@@ -37,15 +37,6 @@ class UserController extends GenericController{
             res.status(500).json({ message: error.message });
         }
     }
-
-    async getByEmail(req, res) {
-        try {
-            const result = await this.service.getByEmail(req.params.email);
-            res.json(result);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    }
 }
 
 module.exports = UserController;
