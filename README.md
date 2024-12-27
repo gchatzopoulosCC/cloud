@@ -2,7 +2,7 @@
 This application simulates a Cloud Storage Application. Initially, the user will choose a package (for maximum storage capacity) and then proceed to register (or log in if the user already has an account). Then the user will gain access to the application where they can upload, edit and delete files from their "remote" storage. In reality, the files will be stored locally, but they will be managed by the MinIO storage server giving the illusion that they are stored remotely.
 
 # Setup
-This section provides a set of instruction required for the project to be successfully setup and working in your machine.
+This section provides instructions for the project to be successfully setup and working on your machine.
 ## Database
 - Install MySQL ([docs(https://dev.mysql.com/doc/refman/8.0/en/installing.html)])
 - Connect to your MySQL Server by running the following command:
@@ -34,8 +34,8 @@ or Ctrl+D (on Unix).
 CREATE DATABASE cloud;
 ```
 Note:
-You can change the name of the database from `cloud` to any name of your choice or keep it as it is.
-- Run this queru to ensure that the database exists:
+You can change the database's name from `cloud` to any name of your choice or keep it as it is.
+- Run this query to ensure that the database exists:
 ```sql
 SHOW DATABASES;
 ```
@@ -58,7 +58,7 @@ PORT=<your_port_number>
 - Change `<your_database_password>` to your database password.
 - Change `<your_port_number>` to a valid port number (for example: 3000).
 
-## Database Syncronisation
+## Database Synchronisation
 - Run the following command:
 ```bash
 node src/sync.js
