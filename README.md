@@ -77,4 +77,4 @@ Database synchronized successfully.
 ```
 
 # API Endpoints
-To get access to the API documentation, setup the application and start the server with `npm start` (or `node server.js`). Then, direct to `<url>/api/docs`, where `<url>` is the initial URL (for example: `http://localhost:3000`). An example of a valid complete URL address would be `http://localhost:3000/api/docs`.
+To get access to the API documentation, setup the application and start the server with `npm start` (or `node server.js`). Then, direct to `<url>/api/docs`, where `<url>` is the initial URL and port number (for example: `http://localhost:3000`). An example of a valid complete URL address would be `http://localhost:3000/api/docs`.
