@@ -5,9 +5,6 @@ const logger = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const routes = require('./routes');
 const sequelize = require('./db');
-const YAML = require('yamljs');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = YAML.load('./swagger.yaml');
 
 const app = express();
 
@@ -25,7 +22,7 @@ app.get('/', (req, res) => {
     });
 
 app.use('/api', routes);
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // Connect to the database
 sequelize.authenticate()
