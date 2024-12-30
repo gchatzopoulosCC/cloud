@@ -46,17 +46,28 @@ Source: MySQL 8.0 Reference Manual. "Chapter 2 Connecting to and Disconnecting f
 - Create a `.env` file in your root directory
 - Paste the following code:
 ```env
-DB_NAME=<your_database_name>
-DB_HOST=<your_database_host>
-DB_USER=<your_database_username>
-DB_PASSWORD=<your_database_password>
-PORT=<your_port_number>
+# Docker Backend
+DATABASE_HOST=mysql
+DATABASE_PORT=3306
+DATABASE_USER=root
+DATABASE_PASSWORD=<your_database_password>
+DATABASE_NAME=<your_database_name>
+
+# Docker MySQL
+MYSQL_ROOT_PASSWORD=<your_mysql_host_password>
+MYSQL_DATABASE=<your_database_name>
+MYSQL_USER=root
+MYSQL_PASSWORD=<your_database_password>
+
+# Ports
+PORT=3000
 ```
 - Change `<your_database_name>` to the name you gave to your database.
-- Change `<your_database_host>` to your mysql host (the host after the `-h` flag in the `mysql -h host -u user -p` command).
-- Change  `<your_database_username>` to your mysql username (the username after the `-u` flag in the `mysql -h host -u user -p` command).
+- (DON'T FOLLOW THIS) Change `<your_database_host>` to your mysql host (the host after the `-h` flag in the `mysql -h host -u user -p` command).
+- (DON'T FOLLOW THIS) Change  `<your_database_username>` to your mysql username (the username after the `-u` flag in the `mysql -h host -u user -p` command).
 - Change `<your_database_password>` to your database password.
-- Change `<your_port_number>` to a valid port number (for example: 3000).
+- (DON'T FOLLOW THIS) Change `<your_port_number>` to a valid port number (for example: 3000).
+- Change `<your_mysql_host_password>` to a host password of your choise.
 
 ## Database Syncronisation
 - Run the following command:

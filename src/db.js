@@ -5,11 +5,11 @@ require('dotenv').config();
 
 // Create a new Sequelize instance
 const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
+    process.env.DATABASE_NAME,
+    process.env.DATABASE_USER,
+    process.env.DATABASE_PASSWORD,
     {
-        host: process.env.DB_HOST,
+        host: process.env.DATABASE_HOST,
         dialect: 'mysql',
     }
 );
