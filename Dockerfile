@@ -1,4 +1,7 @@
-FROM node:23
+FROM node:23-alpine
+
+# Install bash
+RUN apk add --no-cache bash
 
 # Create a directory in the container
 WORKDIR /cloud

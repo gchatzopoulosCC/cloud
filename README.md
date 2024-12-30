@@ -56,8 +56,6 @@ DATABASE_NAME=<your_database_name>
 # Docker MySQL
 MYSQL_ROOT_PASSWORD=<your_mysql_host_password>
 MYSQL_DATABASE=<your_database_name>
-MYSQL_USER=root
-MYSQL_PASSWORD=<your_database_password>
 
 # Ports
 PORT=3000
