@@ -3,44 +3,6 @@ This application simulates a Cloud Storage Application. Initially, the user will
 
 # Setup
 This section provides a set of instruction required for the project to be successfully setup and working in your machine.
-## Database
-- Install MySQL ([docs(https://dev.mysql.com/doc/refman/8.0/en/installing.html)])
-- Connect to your MySQL Server by running the following command:
-```bash
-$> mysql -h host -u user -p
-Enter password: ********
-```
-Note:
-`host` can be changed to any host of your choice and `user` can be any user of your choice.
-
-If that works, you should see some introductory information followed by a `mysql>` prompt:
-```bash
-$> mysql -h host -u user -p
-Enter password: ********
-Welcome to the MySQL monitor. Commands end with ; or \g.
-Your MySQL connection id is 25338 to server version: 8.0.40-standard
-Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
-mysql>
-```
-
-To disconnect run type `QUIT` (on Windows and MAC):
-```bash
-mysql> QUIT
-Bye
-```
-or Ctrl+D (on Unix).
-- Run this query to create a database:
-```sql
-CREATE DATABASE cloud;
-```
-Note:
-You can change the name of the database from `cloud` to any name of your choice or keep it as it is.
-- Run this queru to ensure that the database exists:
-```sql
-SHOW DATABASES;
-```
-
-Source: MySQL 8.0 Reference Manual. "Chapter 2 Connecting to and Disconnecting from the Server" in "MySQL Tutorial" pp. 2-9.
 
 ## Environment Variables
 - Create a `.env` file in your root directory
@@ -61,14 +23,48 @@ MYSQL_DATABASE=<your_database_name>
 PORT=3000
 ```
 - Change `<your_database_name>` to the name you gave to your database.
-- (DON'T FOLLOW THIS) Change `<your_database_host>` to your mysql host (the host after the `-h` flag in the `mysql -h host -u user -p` command).
-- (DON'T FOLLOW THIS) Change  `<your_database_username>` to your mysql username (the username after the `-u` flag in the `mysql -h host -u user -p` command).
 - Change `<your_database_password>` to your database password.
-- (DON'T FOLLOW THIS) Change `<your_port_number>` to a valid port number (for example: 3000).
 - Change `<your_mysql_host_password>` to a host password of your choise.
 
+## Docker
+- Build the docker images with:
+```bash
+docker-compose build
+```
+
+It will take a while to install all the dependencies.
+
+- To start the application run the following:
+```bash
+docker-compose up
+```
+
+You can run both the above commands simultaneously with:
+```bash
+docker-compose up --build
+``` 
+Additionally, if you prefer to run docker in the background (i.e. to hide the logs) you can use the `-d` flag when you run docker-compose. The command would like this:
+```bash
+docker-compose up -d
+```
+
+You can still access the logs with:
+```bash
+docker-compose logs
+```
+
+And you can access the logs of a specific service by providing the service at the end. Example:
+```bash
+docker-compose logs backend
+```
+
+Lastly, you can shut down the containers with:
+```bash
+docker-compose down
+```
+
 ## Database Syncronisation
-- Run the following command:
+- If database synchronisation is needed after `docker-compose build`, then run:
 ```bash
 node src/sync.js
 ```
@@ -83,6 +79,10 @@ Executing (default): DROP TABLE IF EXISTS `Users`;
 Executing (default): CREATE TABLE IF NOT EXISTS `Users` (`id` INTEGER auto_increment , `name` VARCHAR(255) NOT NULL, `email` VARCHAR(255) NOT NULL UNIQUE, `password` VARCHAR(255) NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
 Executing (default): SHOW INDEX FROM `Users`
 Database synchronized successfully.
+```
+#### Node:
+```
+This will delete everythin in the database.
 ```
 
 # API Endpoints
