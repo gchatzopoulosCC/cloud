@@ -7,3 +7,4 @@ sequelize
 swagger-jsdoc
 swagger-ui-express
 yamljs
+minio
