@@ -27,6 +27,7 @@ PORT=3000
 - Change `<your_mysql_host_password>` to a host password of your choise.
 
 ## Docker
+- Install docker
 - Build the docker images with:
 ```bash
 docker-compose build
