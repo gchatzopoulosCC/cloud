@@ -21,6 +21,7 @@ MYSQL_DATABASE=<your_database_name>
 
 # Ports
 PORT=3000
+DATABASE_PORT=3306
 ```
 - Change `<your_database_name>` to the name you gave to your database.
 - Change `<your_database_password>` to your database password.
