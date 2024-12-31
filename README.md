@@ -2,7 +2,7 @@
 This application simulates a Cloud Storage Application. Initially, the user will choose a package (for maximum storage capacity) and then proceed to register (or log in if the user already has an account). Then the user will gain access to the application where they can upload, edit and delete files from their "remote" storage. In reality, the files will be stored locally, but they will be managed by the MinIO storage server giving the illusion that they are stored remotely.
 
 # Setup
-This section provides a set of instruction required for the project to be successfully setup and working in your machine.
+This section provides the instructions required for the project to be successfully set up and working on your machine.
 
 ## Environment Variables
 - Create a `.env` file in your root directory
@@ -21,6 +21,7 @@ MYSQL_DATABASE=<your_database_name>
 
 # Ports
 PORT=3000
+DATABASE_PORT=3306
 ```
 - Change `<your_database_name>` to the name you gave to your database.
 - Change `<your_database_password>` to your database password.
@@ -54,17 +55,30 @@ You can still access the logs with:
 docker-compose logs
 ```
 
-And you can access the logs of a specific service by providing the service at the end. Example:
+You can access the logs of a specific service by providing the service at the end. Example:
 ```bash
 docker-compose logs backend
 ```
+
+If there is a connection issue you can check if you have proper permissions with:
+```bash
+docker-compose up -d
+docker exec -it mysql-db mysql -u root -p
+```
+
+Type your mysql password (the same int the .env) if requested. Then run the following SQL command:
+```sql
+SELECT User, Host FROM mysql.user;
+```
+
+The result should include `my_user | %` or `root | %`. If the result is different from the DATABASE_USER you have in the .env change it to the user that is returned.
 
 Lastly, you can shut down the containers with:
 ```bash
 docker-compose down
 ```
 
-## Database Syncronisation
+## Database Synchronisation
 - If database synchronisation is needed after `docker-compose build`, then run:
 ```bash
 node src/sync.js
@@ -81,10 +95,10 @@ Executing (default): CREATE TABLE IF NOT EXISTS `Users` (`id` INTEGER auto_incre
 Executing (default): SHOW INDEX FROM `Users`
 Database synchronized successfully.
 ```
-#### Node:
+#### Warning:
 ```
-This will delete everythin in the database.
+This will delete everything in the database.
 ```
 
 # API Endpoints
-To get access to the API documentation, setup the application and start the server with `npm start` (or `node server.js`). Then, direct to `<url>/api/docs`, where `<url>` is the initial URL (for example: `http://localhost:3000`). An example of a valid complete URL address would be `http://localhost:3000/api/docs`.
+To get access to the API documentation, set up the application and start the server with `npm start` (or `node server.js`). Then, direct to `<url>/api/docs`, where `<url>` is the initial URL (for example: `http://localhost:3000`). An example of a valid complete URL address would be `http://localhost:3000/api/docs`.

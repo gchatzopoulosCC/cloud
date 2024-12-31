@@ -1,10 +1,13 @@
 FROM node:23-alpine
 
 # Install bash
-RUN apk add --no-cache bash git
-RUN git --version
+RUN apk add --no-cache bash
+
 # Create a directory in the container
 WORKDIR /cloud
+
+# Copy package.json and package-lock.json into the container
+COPY package*.json ./
 
 # Copy package.json and package-lock.json into the container
 COPY package*.json ./
