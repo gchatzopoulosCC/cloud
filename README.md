@@ -29,6 +29,7 @@ DATABASE_PORT=3306
 
 ## Docker
 - Install docker
+- Install git
 - Build the docker images with:
 ```bash
 docker-compose build
