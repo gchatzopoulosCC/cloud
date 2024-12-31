@@ -4,7 +4,7 @@ FROM node:23-alpine
 RUN apk add --no-cache bash git
 
 # Verify git installation
-RUN git --version
+RUN bash --version && git --version
 
 # Create a directory in the container
 WORKDIR /cloud

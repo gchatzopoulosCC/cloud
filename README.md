@@ -58,6 +58,19 @@ And you can access the logs of a specific service by providing the service at th
 docker-compose logs backend
 ```
 
+If there is a connection issue you can check if you have proper permissions with:
+```bash
+docker-compose up -d
+docker exec -it mysql-db mysql -u root -p
+```
+
+Type your mysql password (the same int the .env) if requested. Then run the following SQL command:
+```sql
+SELECT User, Host FROM mysql.user;
+```
+
+The result should should include `my_user | %` or `root | %`. If the result is different from the DATABASE_USER you have in the .env change it to the user that is returned.
+
 Lastly, you can shut down the containers with:
 ```bash
 docker-compose down
