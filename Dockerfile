@@ -20,11 +20,20 @@ RUN dos2unix /usr/local/bin/wait-for-it.sh
 # Make wait-for-it.sh executable in the container
 RUN chmod +x /usr/local/bin/wait-for-it.sh
 
+# Copy docker-entrypoint.sh into the container
+COPY docker-entrypoint.sh /usr/local/bin/
+
+# Convert the file to Unix format
+RUN dos2unix /usr/local/bin/docker-entrypoint.sh
+
+# Make docker-entrypoint.sh executable in the container
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Install dependencies
 RUN npm install
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 8080
+EXPOSE 4000
 
-# Start the application
-CMD ["./wait-for-it.sh", "mysql:3306", "--", "npm", "start"]
+# Run the entrypoint script
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
