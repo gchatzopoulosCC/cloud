@@ -1,6 +1,8 @@
 /* App configuration */
 
 const express = require('express');
+const cors = require('cors');
+const compression = require('compression'); 
 const logger = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const routes = require('./routes');
@@ -13,6 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// Security and performance
+app.use(cors());
+app.use(compression());
+
 // Middlewares
 app.use(logger)
 
@@ -22,16 +28,6 @@ app.get('/', (req, res) => {
     });
 
 app.use('/api', routes);
-
-
-// Connect to the database
-sequelize.authenticate()
-.then(() => {
-    console.log('Connection has been established successfully.');
-})
-.catch((error) => {
-    console.error('Unable to connect to the database:', error);
-});
 
 // Error handler
 app.use(errorHandler);
