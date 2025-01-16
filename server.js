@@ -4,17 +4,26 @@ require('dotenv').config();
 const app = require('./src/app');
 const http = require('http');
 
-const PORT = process.env.PORT || 3000;
+const BACKEND_PORT = process.env.BACKEND_PORT || 3000;
 
 const server = http.createServer(app);
 
-server.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+server.listen(BACKEND_PORT, "0.0.0.0", () => {
+    console.log(`Server is running on http://localhost:${BACKEND_PORT}`);
 })
 
 // Graceful shutdown
 process.on('SIGINT', () => {
     console.log('Received SIGINT. Shutting down gracefully...');
+    server.close(() => {
+      console.log('Server closed.');
+      process.exit(0);
+    });
+  });
+
+// Container shutdown
+process.on('SIGTERM', () => {
+    console.log('Received SIGTERM. Shutting down gracefully...');
     server.close(() => {
       console.log('Server closed.');
       process.exit(0);

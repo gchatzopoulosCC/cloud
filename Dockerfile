@@ -9,31 +9,22 @@ WORKDIR /cloud
 # Copy package.json and package-lock.json into the container
 COPY package*.json ./
 
-COPY . .
-
-# Copy wait-for-it.sh into the container
-COPY wait-for-it.sh /usr/local/bin/
-
-# Convert the file to Unix format
-RUN dos2unix /usr/local/bin/wait-for-it.sh
-
-# Make wait-for-it.sh executable in the container
-RUN chmod +x /usr/local/bin/wait-for-it.sh
-
-# Copy docker-entrypoint.sh into the container
-COPY docker-entrypoint.sh /usr/local/bin/
-
-# Convert the file to Unix format
-RUN dos2unix /usr/local/bin/docker-entrypoint.sh
-
-# Make docker-entrypoint.sh executable in the container
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
 # Install dependencies
 RUN npm install
 
-# Expose port 8080
-EXPOSE 4000
+COPY . .
+
+# Copy wait-for-it.sh and docker-entrypoint.sh into the container
+COPY wait-for-it.sh docker-entrypoint.sh /usr/local/bin/
+
+# Convert the files to Unix format
+RUN dos2unix /usr/local/bin/wait-for-it.sh /usr/local/bin/docker-entrypoint.sh
+
+# Make wait-for-it.sh and docker-entrypoint.sh executable in the container
+RUN chmod +x /usr/local/bin/wait-for-it.sh /usr/local/bin/docker-entrypoint.sh
+
+# Expose port 3000
+EXPOSE 3000
 
 # Run the entrypoint script
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
