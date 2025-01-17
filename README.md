@@ -16,6 +16,12 @@ DATABASE_NAME=<your_database_name>
 # Docker MySQL
 MYSQL_ROOT_PASSWORD=<your_mysql_root_password>
 
+# Docker MinIO
+MINIO_ROOT_USER=<your_minio_root_user>
+MINIO_ROOT_PASSWORD=<your_minio_root_password>
+MINIO_BUCKET_NAME=<your_minio_bucket_name>
+MINIO_REGION=<your_minio_region>
+
 # Ports
 BACKEND_PORT=<your_backend_port>
 DATABASE_PORT=<your_database_port>
@@ -24,6 +30,10 @@ DATABASE_PORT=<your_database_port>
 - Change `<your_database_password>` to a database password of your choice.
 - Change `<your_database_name>` to a database name of your choice.
 - Change `<your_mysql_root_password>` to a root password of your choice.
+- Change `<your_minio_root_user>` to a username of your choice.
+- Change `<your_minio_root_password>` to a password of your choice.
+- Change `<your_minio_bucket_name>` to a bucket name of your choice.
+- Change `<your_minio_region>` to a region of your choice.
 - Change `<your_backend_port>` to a backend port of your choice.
 - Change `<your_database_port>` to a database port of your choice
 
@@ -36,6 +46,12 @@ DATABASE_NAME=cloud
 
 # Docker MySQL
 MYSQL_ROOT_PASSWORD=123456
+
+# Docker MinIO
+MINIO_ROOT_USER=root
+MINIO_ROOT_PASSWORD=123456
+MINIO_BUCKET_NAME=cloud-storage
+MINIO_REGION=eu-south-1
 
 # Ports
 BACKEND_PORT=3000
@@ -87,6 +103,40 @@ backend-1  | Server is running on http://localhost:3000
 backend-1  | Executing (default): SELECT 1+1 AS result
 backend-1  | Connection has been established successfully.
 ```
+
+Shut down the docker containers with:
+```bash
+docker-compose down
+```
+
+# MinIO
+Ensure that your MinIO client is working start application with:
+```bash
+docker-compose up -d
+```
+
+And check the MinIO logs with: 
+```bash
+docker-compose logs minio
+```
+
+This is the expected result:
+```bash
+mrchatzopoulos@fedora:~/college/web/cloud$ docker-compose logs minio
+minio-1  | MinIO Object Storage Server
+minio-1  | Copyright: 2015-2025 MinIO, Inc.
+minio-1  | License: GNU AGPLv3 - https://www.gnu.org/licenses/agpl-3.0.html
+minio-1  | Version: RELEASE.2024-12-18T13-15-44Z (go1.23.4 linux/amd64)
+minio-1  | 
+minio-1  | API: http://172.21.0.2:9000  http://127.0.0.1:9000 
+minio-1  | WebUI: http://172.21.0.2:9001 http://127.0.0.1:9001  
+minio-1  | 
+minio-1  | Docs: https://docs.min.io
+```
+
+To access your minio console in `http://127.0.0.1:9001` you have to login with the following credentials:
+- Username: The `MINIO_ROOT_USER` you have defined in your `.env`.
+- Password: The `MINIO_ROOT_PASSWORD` you have defined in your `.env`.
 
 # API Endpoints
 To get access to the API documentation, set up the application and start the server with `npm start` (or `node server.js`). Then, direct to `<url>/api/docs`, where `<url>` is the initial URL (for example: `http://localhost:3000`). An example of a valid complete URL address would be `http://localhost:3000/api/docs`.

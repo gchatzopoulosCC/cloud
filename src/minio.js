@@ -4,8 +4,8 @@ const minioClient = new Minio.Client({
   endPoint: "minio",
   port: parseInt(process.env.MINIO_PORT || "9000", 10),
   useSSL: false,
-  accessKey: process.env.MINIO_ACCESS_KEY,
-  secretKey: process.env.MINIO_SECRET_KEY,
+  accessKey: process.env.MINIO_ROOT_USER,
+  secretKey: process.env.MINIO_ROOT_PASSWORD,
 });
 
 const bucketName = process.env.MINIO_BUCKET_NAME || "cloud-storage";
