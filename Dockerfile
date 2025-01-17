@@ -1,7 +1,7 @@
 FROM node:23-alpine
 
 # Install bash
-RUN apk add --no-cache bash git dos2unix
+RUN apk add --no-cache bash dos2unix
 
 # Create a directory in the container
 WORKDIR /cloud
@@ -10,7 +10,7 @@ WORKDIR /cloud
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 COPY . .
 
