@@ -6,7 +6,6 @@ const compression = require('compression');
 const logger = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const routes = require('./routes');
-const sequelize = require('./db');
 
 const app = express();
 

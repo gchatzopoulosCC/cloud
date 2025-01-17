@@ -2,11 +2,12 @@ services:
   backend:
     build: ./
     ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
+      - "${BACKEND_PORT:-3000}:3000"
     env_file:
       - .env
     depends_on:
       - mysql
+      - minio
     entrypoint: ["/usr/local/bin/docker-entrypoint.sh"]
     environment:
       - NODE_ENV=development
@@ -20,14 +21,30 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${DATABASE_NAME}
     ports:
-      - "${DATABASE_PORT}:${DATABASE_PORT}"
+      - "${DATABASE_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - cloud-network
 
+  minio:
+    image: minio/minio
+    restart: always
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "9001:9001" # Minio Console
+    environment:
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - cloud-network
+
 volumes:
   mysql_data:
+  minio_data:
   
 networks:
   cloud-network:
