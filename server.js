@@ -4,6 +4,13 @@ require('dotenv').config();
 const app = require('./src/app');
 const http = require('http');
 
+// Start MinIO
+const { initializeMinio } = require('./src/minio');
+initializeMinio().catch((error) => {
+  console.error('Error initializing MinIO:', error);
+  process.exit(1);
+});
+
 const BACKEND_PORT = process.env.BACKEND_PORT || 3000;
 
 const server = http.createServer(app);
