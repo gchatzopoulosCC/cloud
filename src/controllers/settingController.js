@@ -1,4 +1,6 @@
-class settingsController extends require('./genericController') {
+const GenericController = require('./genericController');
+
+class settingController extends GenericController {
   constructor(service) {
     super(service);
     this.get = this.get.bind(this);
@@ -54,4 +56,4 @@ class settingsController extends require('./genericController') {
   }
 }
 
-module.exports = settingsController;
+module.exports = settingController;

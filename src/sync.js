@@ -2,6 +2,8 @@
 
 const sequelize = require("./db");
 require("./models/userModel");
+require("./models/fileModel");
+require("./models/settingModel");
 
 sequelize
   .sync({ alter: true })

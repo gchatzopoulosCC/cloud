@@ -1,4 +1,4 @@
-const settingsModel = require('./settingService');
+const settingsModel = require('../models/settingModel');
 const bcrypt = require('bcryptjs');
 
 class SettingsService {
