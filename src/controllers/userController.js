@@ -32,7 +32,7 @@ class UserController extends GenericController {
       }
 
       const result = await this.service.create(req.body);
-      res.json(result);
+      res.status(201).json(result);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
