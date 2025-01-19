@@ -41,8 +41,8 @@ class GenericController {
 
     async delete(req, res) {
         try {
-            const result = await this.service.delete(req.params.id);
-            res.json(result);
+            await this.service.delete(req.params.id);
+            res.status(204).send();
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
