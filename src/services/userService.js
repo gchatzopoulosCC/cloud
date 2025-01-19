@@ -88,8 +88,7 @@ class UserService {
   }
 
   async delete(id) {
-    await userModel.destroy({ where: { id } });
-    return `User ${id} was deleted successfully`;
+    return await userModel.destroy({ where: { id } });
   }
 }
 

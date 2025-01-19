@@ -17,11 +17,6 @@ class SettingsController {
 
   async getById(req, res) {
     try {
-      // Check if the user is trying to access their own account
-      if (req.params.id !== req.user.settingsId) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-
       const result = await this.service.getById(req.params.id);
       res.json(result);
     } catch (error) {
@@ -34,13 +29,8 @@ class SettingsController {
 
   async delete(req, res) {
     try {
-      // Check if the user is trying to delete their own account
-      if (req.params.id !== req.user.settingsId) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-
       await this.service.delete(req.params.id);
-      res.json({ message: `Deleted Settings instance ${req.params.id}` });
+      res.status(204).send();
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

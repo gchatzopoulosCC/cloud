@@ -72,12 +72,8 @@ const router = express.Router();
  *           schema:
  *             $ref: '#/components/schemas/UserUpdate'
  *     responses:
- *       '200':
+ *       '204':
  *         description: User updated
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
  *       '403':
  *         description: Forbidden
  *       '404':
@@ -92,12 +88,8 @@ const router = express.Router();
  *           type: integer
  *         description: ID of the user
  *     responses:
- *       '200':
+ *       '204':
  *         description: User deleted
- *         content:
- *           text/plain:
- *             schema:
- *               type: string
  *       '403':
  *         description: Forbidden
  *       '404':
