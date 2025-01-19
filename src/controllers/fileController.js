@@ -7,27 +7,40 @@ class FilesController extends GenericController{
         super(service);
         this.get = this.get.bind(this);
         this.getById = this.getById.bind(this);
-        this.create = this.create.bind(this);
-        this.update = this.update.bind(this);
+        this.upload = this.upload.bind(this);
+        this.changeName = this.changeName.bind(this);
         this.delete = this.delete.bind(this);
         this.download = this.download.bind(this);
     }
 
-    async create(req, res) {
+    // TODO: Create a middleware to add constraints to the file name
+    async upload(req, res) {
         try {
-            const { name, size, type } = req.body;
-            const result = await this.service.create(name, size, type);
+            const userId = req.body.userId;
+            if (!userId) {
+                return res.status(400).send({
+                    message: 'userId required!'
+                });
+            }
+
+            const file = req.file;
+            if (!file) {
+                return res.status(400).send({
+                    message: 'File required!'
+                });
+            }
+            const result = await this.service.upload(userId, file);
             res.json(result);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
     }
 
-    async update(req, res) {
+    async changeName(req, res) {
         try {
-            // Only updating the name of the file           
+            // Only updating the name of the file
             const { name } = req.body;
-            const result = await this.service.update(req.params.id, name);
+            const result = await this.service.changeName(req.params.id, name);
             res.json(result);
         } catch (error) {
             res.status(500).json({ message: error.message });
