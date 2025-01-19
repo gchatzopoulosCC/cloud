@@ -54,4 +54,4 @@ class FileService {
     }
 }
 
-module.exports = new FileService();
+module.exports = FileService;

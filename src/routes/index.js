@@ -3,11 +3,9 @@
 const express = require('express');
 const userRoutes = require('./userRoutes');
 const fileRoutes = require('./fileRoutes');
-const settingRoutes = require('./settingRoutes');
+const settingsRoutes = require('./settingsRoutes');
 // Swagger
-const YAML = require('yamljs');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = YAML.load('./swagger.yaml');
+const { swaggerUi, swaggerSpec } = require('../swagger');
 
 const router = express.Router();
 
@@ -16,10 +14,10 @@ router.get('/', (req, res) => {
 });
 router.use('/user', userRoutes);
 router.use('/file', fileRoutes);
-router.use('/setting', settingRoutes);
+router.use('/settings', settingsRoutes);
 
 // Swagger
-router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 module.exports = router;

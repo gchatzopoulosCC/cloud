@@ -1,9 +1,10 @@
 const express = require('express');
 const filesController = require('../controllers/fileController');
-const fileService = require('../services/fileService');
+const FileService = require('../services/fileService');
+const service = new FileService();
 
 const router = express.Router();
-const filesCtrl = new filesController(fileService);
+const filesCtrl = new filesController(service);
 
 router.get('/', filesCtrl.get);
 router.get('/:id', filesCtrl.getById);
