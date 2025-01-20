@@ -2,8 +2,7 @@ const filesModel = require("../models/fileModel");
 const fs = require("fs");
 const path = require("path");
 const { minioClient, bucketName } = require("../minio");
-const UserService = require("./userService");
-const userService = new UserService();
+const userService = require("./userService");
 
 class FileService {
   async upload(userId, file) {
