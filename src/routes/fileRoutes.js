@@ -5,6 +5,7 @@ const service = new FileService();
 const upload = require('../middlewares/multer');
 const validateFileName = require('../middlewares/validateFileName');
 //const validateStorage = require('../middlewares/validateStorage');
+const isAuthenticated = require('../middlewares/isAuthenticated');
 
 const router = express.Router();
 const filesCtrl = new filesController(service);
@@ -142,11 +143,11 @@ const filesCtrl = new filesController(service);
  *           format: binary
  *           example: file
  */
-router.get('/', filesCtrl.get);
-router.get('/:id', filesCtrl.getById);
-router.post('/', upload.single('file'), filesCtrl.upload);
-router.put('/:id', validateFileName, filesCtrl.changeName);
-router.delete('/:id', filesCtrl.delete);
-router.get('/download/:id', filesCtrl.download);
+router.get('/', isAuthenticated, filesCtrl.get);
+router.get('/:id', isAuthenticated, filesCtrl.getById);
+router.post('/', isAuthenticated, upload.single('file'), filesCtrl.upload);
+router.put('/:id', isAuthenticated, validateFileName, filesCtrl.changeName);
+router.delete('/:id', isAuthenticated, filesCtrl.delete);
+router.get('/download/:id', isAuthenticated, filesCtrl.download);
 
 module.exports = router;
