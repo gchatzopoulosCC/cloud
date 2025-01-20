@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClassLink</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/pages/settings.css" />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../assets/images/favicon.png"
+    />
+    <script src="../scripts/loggedOutCheck.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__wrapper">
+        <div class="logo header_logo">
+          <img src="../assets/images/logo.png" alt="logo" />
+        </div>
+        <nav class="navbar header_navbar">
+          <ul class="header_navbar_list">
+            <li><a class="btn btn-light" href="./file-manager.html">File Manager</a></li>
+            <li><a class="btn btn-light">Settings</a></li>
+          </ul>
+          <ul class="header_navbar_burger" onclick="toggleBurger(event)">
+            <li><a class="btn btn-light" href="./file-manager.html">File Manager</a></li>
+            <li><a class="btn btn-light">Settings</a></li>
+          </ul>
+        </nav>
+      </div>
+      </header>
+      <main class="main">
+        <div class="main__wrapper">
+          <a href="./file-manager.html" class="btn btn-link btn-back">
+            <img src="../assets/icons/arrow-left.svg" alt="arrow left" class="btn-arrow"/></a>
+            <aside class="main_aside">
+              <h2 class="aside_title">
+                Settings
+              </h2>
+              <div class="aside_content">
+                <div class="aside_options">
+                  <h2 class="options_title">Account Settings</h2>
+                  <a href="./subpages/new-password.html" target="iframe" class="aside_option btn btn-dark">
+                    Change Password
+                  </a>
+                  <a href="./subpages/new-email.html" target="iframe" class="aside_option btn btn-dark">
+                    Update Email
+                  </a>
+                </div>
+                <div class="aside_options">
+                  <h2 class="options_title">Storage Information</h2>
+                  <div class="aside_option">
+                    <p><span id="storage-used">100 MB</span> used</p>
+                  </div>
+                </div>
+                <div class="aside_options">
+                  <h2 class="options_title">Preferences</h2>
+                  <a href="./subpages/notifications.html" target="iframe" class="aside_option btn btn-light">Notifications</a>
+                  <a href="./subpages/delete.html" target="iframe" class="aside_option btn btn-danger">Delete Account</a>
+                  <button onclick="logout()" class="aside_option btn btn-info" >Logout</button>
+                </div>
+              </div>
+            </aside>
+            <iframe name="iframe" src="./subpages/notifications.html" class="main_section">
+            </iframe>
+        </div>
+    </main>
+    <footer class="footer">
+      <div class="footer__wrapper">
+        <div class="logo footer_logo">
+          <img src="../assets/images/logo.png" alt="logo" />
+        </div>
+        <nav class="navbar footer_navbar">
+          <ul class="footer_navbar_list">
+            <li class="footer_navbar_item"><a href="./term-of-service.html" class="btn btn-link">Terms Of Service</a></li>
+            <li class="footer_navbar_item"><a href="./privacy-policy.html" class="btn btn-link">Privacy Policy</a></a></li>
+          </ul>
+        </nav>
+      <div class="footer_copyright">
+        <p>&copy; Copyright. All rights reserved.</p>
+      </div>
+    </div>
+    </footer>
+    <script src="../scripts/settings.js"></script>
+    <script>
+      let toggleBurger = function(e){
+            if(e.target.classList.contains('header_navbar_burger')){
+              e.target.classList.toggle('header_navbar_burger--active');
+            }
+          };
+    </script>
+  </body>
+</html>

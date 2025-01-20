@@ -1,0 +1,92 @@
+.main {
+  --title: clamp(1.875rem, 1.2679rem + 3.0357vw, 4rem);
+  --subtitle: clamp(0.9375rem, 0.6339rem + 1.5179vw, 2rem);
+  min-height: calc(100vh - 285px);
+  justify-content: center;
+  display: flex;
+  width: 100%;
+}
+
+.main__wrapper {
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px;
+  display: flex;
+  width: 100%;
+}
+
+.main_title {
+  letter-spacing: -0.15px;
+  text-align: center;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: var(--title);
+}
+
+.main_subtitle {
+  letter-spacing: 1.2px;
+  font-weight: 400;
+  font-size: var(--subtitle);
+}
+
+.tiles {
+  justify-content: center;
+  flex-wrap: wrap;
+  display: flex;
+  width: 100%;
+  gap: 54px;
+}
+
+.tile {
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.tile_btn {
+  background-color: #79c7d1;
+  justify-content: center;
+  border-radius: 100px;
+  align-items: center;
+  font-weight: 500;
+  font-size: 2rem;
+  color: #fff;
+  display: flex;
+  height: 74px;
+  width: 275px;
+  border: none;
+}
+
+.tile:nth-child(2) > .tile_btn {
+  margin-left: 65px;
+}
+
+.tile_btn:hover {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .tiles {
+    overflow: hidden;
+  }
+
+  .tile_btn {
+    font-size: 1.5rem;
+    height: 60px;
+    width: 100%;
+  }
+
+  .tile:nth-child(2) > .tile_btn {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .tile_btn {
+    font-size: 1.2rem;
+    height: 50px;
+    width: 100%;
+  }
+}

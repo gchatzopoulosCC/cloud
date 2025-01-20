@@ -1,0 +1,174 @@
+.main {
+  min-height: calc(100vh - 285px);
+  justify-content: center;
+  display: flex;
+  width: 100%;
+}
+
+.main__wrapper {
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  max-width: 1440px;
+  padding: 0 20px;
+  display: flex;
+  width: 100%;
+}
+
+.btn-back {
+  letter-spacing: 1.4px;
+  text-decoration: none;
+  align-items: center;
+  position: absolute;
+  font-size: 2rem;
+  display: flex;
+  color: black;
+  padding: 0;
+  left: 36px;
+  top: 20px;
+}
+
+.btn-arrow {
+  transition: 0.3s;
+  margin-right: 28px;
+}
+
+.btn-back:hover {
+  color: black;
+}
+
+.btn-back:hover .btn-arrow {
+  transform: translate(-5px, 0);
+}
+
+.content {
+  justify-content: space-evenly;
+  border: 1px solid #d9d9d9;
+  padding: 26px 24px 0;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  max-width: 580px;
+  flex-wrap: wrap;
+  display: flex;
+  width: 100%;
+}
+
+.form {
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 26px;
+  position: relative;
+}
+
+label {
+  margin-bottom: 12px;
+}
+
+.form-control {
+  height: 40px;
+}
+
+.form-error {
+  position: absolute;
+  bottom: -20px;
+  color: red;
+  left: 14px;
+}
+
+.intext-link {
+  color: #036cf4;
+}
+
+.btn-info {
+  background-color: #79c7d1;
+  border: 1px solid #000;
+  justify-content: center;
+  margin-bottom: 24px;
+  align-items: center;
+  border-radius: 8px;
+  font-weight: 350;
+  font-size: 1rem;
+  color: #000;
+  display: flex;
+  height: 40px;
+  width: 100%;
+}
+
+.btn-info:hover {
+  border: 1px solid #000;
+  color: #000;
+}
+
+.checkbox {
+  letter-spacing: -0.08px;
+  margin-bottom: 48px;
+  align-items: center;
+  font-size: 0.95rem;
+  display: flex;
+  width: 100%;
+}
+
+.checkbox > input {
+  margin-right: 10px;
+  appearance: none;
+}
+
+.checkbox > input::before {
+  border: 1px solid #000;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  display: flex;
+  color: #fff;
+  height: 16px;
+  width: 16px;
+  content: "";
+}
+.checkbox > input:checked::before {
+  background-color: #000;
+  content: "✓";
+}
+
+.checkbox > label {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .checkbox > input::before {
+    height: 14px;
+    width: 14px;
+  }
+
+  .checkbox > label {
+    font-size: 0.875rem;
+  }
+
+  a {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkbox > input::before {
+    height: 12px;
+    width: 12px;
+  }
+
+  .checkbox > label {
+    font-size: 0.75rem;
+  }
+
+  a {
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,167 @@
+.main {
+  min-height: calc(100vh - 285px);
+  justify-content: center;
+  display: flex;
+  width: 100%;
+}
+
+.main__wrapper {
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  max-width: 1440px;
+  padding: 0 20px;
+  display: flex;
+  width: 100%;
+}
+
+.btn-back {
+  text-decoration: none;
+  letter-spacing: 1.4px;
+  align-items: center;
+  position: absolute;
+  font-size: 2rem;
+  display: flex;
+  color: black;
+  padding: 0;
+  left: 26px;
+  top: 16px;
+}
+
+.btn-arrow {
+  margin-right: 30px;
+  transition: 0.3s;
+}
+
+.btn-back:hover {
+  color: black;
+}
+
+.btn-back:hover .btn-arrow {
+  transform: translate(-5px, 0);
+}
+
+.content {
+  justify-content: space-evenly;
+  align-items: center;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+
+.tile {
+  border: 1px solid #000;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 48px;
+  max-width: 416px;
+  display: flex;
+}
+
+.tile_title {
+  letter-spacing: 1.2px;
+  margin-bottom: 26px;
+  font-size: 2rem;
+}
+
+.tile_price {
+  letter-spacing: 0.8px;
+  margin-bottom: 65px;
+  font-size: 1.2rem;
+}
+
+.tile_description {
+  letter-spacing: 1.4px;
+  margin-bottom: 50px;
+  text-align: center;
+  line-height: 40px;
+  max-width: 210px;
+  font-size: 2rem;
+}
+
+.btn-info {
+  background-color: #79c7d1;
+  justify-content: center;
+  letter-spacing: 1.6px;
+  border-radius: 40px;
+  margin-bottom: 60px;
+  align-items: center;
+  font-weight: 350;
+  font-size: 2rem;
+  color: #fff;
+  display: flex;
+  height: 102px;
+  width: 320px;
+  border: none;
+}
+
+.btn-info:last-child {
+  margin-bottom: 0;
+}
+
+.btn-info:hover {
+  color: #fff;
+}
+
+.btn-gray {
+  background-color: #565555;
+  color: #fff;
+}
+
+.btn-gray:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .main {
+    min-height: calc(100vh - 200px);
+  }
+
+  .main__wrapper {
+    padding: 0 10px;
+  }
+
+  .btn-back {
+    font-size: 1.5rem;
+    left: 20px;
+    top: 12px;
+  }
+
+  .btn-arrow {
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    min-height: calc(100vh - 150px);
+  }
+
+  .tile {
+    padding: 40px 30px;
+    width: 100%;
+  }
+
+  .btn-info {
+    width: 100%;
+  }
+
+  .main__wrapper {
+    padding: 0 5px;
+  }
+
+  .btn-back {
+    font-size: 1.2rem;
+    left: 15px;
+    top: 10px;
+  }
+
+  .btn-arrow {
+    margin-right: 15px;
+  }
+}

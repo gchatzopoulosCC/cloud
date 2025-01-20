@@ -1,0 +1,9 @@
+@import url("./styles/index.css");
+
+* {
+  font-family: "Inter";
+}
+
+body {
+  min-height: 100vh;
+}
