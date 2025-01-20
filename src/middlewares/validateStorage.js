@@ -1,6 +1,5 @@
 const userService = require('../services/userService');
 
-// TODO: Not used, probably doesn't work
 const validateStorage = (req, res, next) => {
     const userId = req.params.id;
     const user = userService.getById(userId);
@@ -11,6 +10,7 @@ const validateStorage = (req, res, next) => {
     }
     const userStorage = user.storage;
     const plan = user.plan;
+    console.log("Plan: ", plan);
     const file = req.file;
     const fileSize = file.size;
 

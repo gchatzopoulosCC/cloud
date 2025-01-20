@@ -4,6 +4,7 @@ const FileService = require('../services/fileService');
 const service = new FileService();
 const upload = require('../middlewares/multer');
 const validateFileName = require('../middlewares/validateFileName');
+//const validateStorage = require('../middlewares/validateStorage');
 
 const router = express.Router();
 const filesCtrl = new filesController(service);
