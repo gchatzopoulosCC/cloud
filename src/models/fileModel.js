@@ -1,5 +1,6 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../db');
+const User = require('./userModel');
 
 const File = sequelize.define('File', {
     id: {
@@ -38,7 +39,7 @@ const File = sequelize.define('File', {
                 msg: 'Type is required'
             },
             isIn: {
-                args: [['image/jpeg', 'image/png', 'application/pdf']], 
+                args: [['.jpg', '.png', '.pdf', '.docx', '.txt', '.xlsx']], 
                 msg: 'Invalid file type'
             }
         }
@@ -51,7 +52,28 @@ const File = sequelize.define('File', {
                 msg: 'Path is required'
             }
         }
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'User ID is required'
+            },
+            isInt: {
+                msg: 'User ID must be an integer'
+            }
+        }
     }
+});
+
+User.hasMany(File, {
+    foreignKey: 'userId',
+    onDelete: 'CASCADE',
+});
+
+File.belongsTo(User, {
+    foreignKey: 'userId',
 });
 
 module.exports = File;
