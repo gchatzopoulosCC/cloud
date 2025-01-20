@@ -40,6 +40,28 @@ class FilesController extends GenericController{
         try {
             // Only updating the name of the file
             const { name } = req.body;
+            // Check if the name is provided
+            if (!name) {
+                return res.status(400).send({
+                    message: 'name required!'
+                });
+            }
+
+            // Check if the file exists
+            const file = await this.service.getById(req.params.id);
+            if (!file) {
+                return res.status(404).send({
+                    message: 'File not found!'
+                });
+            }
+
+            // Check if a file with the same name already exists
+            const existingFile = await this.service.getByName(name);
+            if (existingFile) {
+                return res.status(400).send({
+                    message: 'A file with the same name already exists!'
+                });
+            }
             const result = await this.service.changeName(req.params.id, name);
             res.json(result);
         } catch (error) {

@@ -66,6 +66,10 @@ class FileService {
         return file;
     }
 
+    async getByName(name) {
+        return await filesModel.findOne({ where: { name } });
+    }
+
     async changeName(id, name) {
         const file = await this.getById(id);
         if (!file) {
