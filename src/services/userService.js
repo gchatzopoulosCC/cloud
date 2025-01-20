@@ -18,7 +18,7 @@ class UserService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
-      // Get the id of the settings configuration
+        // Get the id of the settings configuration
       // or create one if it doesn't exist
       const [settings] = await Settings.findOrCreate({
         where: {
@@ -36,11 +36,11 @@ class UserService {
 
       return user;
     } catch (error) {
-      if (error.name === "SequelizeValidationError") {
-        const messages = error.errors.map((err) => err.message);
-        throw new Error(messages.join(", "));
-      }
-      throw error;
+        if (error.name === 'SequelizeValidationError') {
+            const messages = error.errors.map(err => err.message);
+            throw new Error(messages.join(', '));
+        }
+        throw error;
     }
   }
 
