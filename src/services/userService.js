@@ -10,10 +10,12 @@ class UserService {
       throw new Error("Password is required");
     }
     if (!validPlans.includes(plan)) {
-        throw new Error(`Invalid plan. Valid plans are: ${validPlans.join(', ')}`);
+      throw new Error(
+        `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
+      );
     }
-    if (typeof notificationsEnabled !== 'boolean') {
-        throw new Error('notificationsEnabled must be a boolean');
+    if (typeof notificationsEnabled !== "boolean") {
+      throw new Error("notificationsEnabled must be a boolean");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -46,13 +48,13 @@ class UserService {
 
   async get() {
     return userModel.findAll({
-        include: Settings,
+      include: Settings,
     });
   }
 
   async getById(id) {
     return userModel.findByPk(id, {
-        include: Settings,
+      include: Settings,
     });
   }
 
@@ -61,24 +63,29 @@ class UserService {
 
     // Validatinon
     if (plan && !validPlans.includes(plan)) {
-        throw new Error(`Invalid plan. Valid plans are: ${validPlans.join(', ')}`);
+      throw new Error(
+        `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
+      );
     }
-    if (notificationsEnabled !== undefined && typeof notificationsEnabled !== 'boolean') {
-        throw new Error('notificationsEnabled must be a boolean');
+    if (
+      notificationsEnabled !== undefined &&
+      typeof notificationsEnabled !== "boolean"
+    ) {
+      throw new Error("notificationsEnabled must be a boolean");
     }
 
     const updateData = { name, email };
 
     if (plan && notificationsEnabled !== undefined) {
-        const [settings] = await Settings.findOrCreate({
-            where: {
-                plan,
-                notificationsEnabled: notificationsEnabled,
-            },
-        });
-        updateData.settingsId = settings.id;
+      const [settings] = await Settings.findOrCreate({
+        where: {
+          plan,
+          notificationsEnabled: notificationsEnabled,
+        },
+      });
+      updateData.settingsId = settings.id;
     }
-        
+
     if (password) {
       updateData.password = await bcrypt.hash(password, 10);
     }

@@ -1,6 +1,8 @@
 /* Database configuration */
 
 const { Sequelize } = require('sequelize');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 require('dotenv').config();
 
 // Create a new Sequelize instance
@@ -25,4 +27,10 @@ sequelize.authenticate()
         console.error('Unable to connect to the database:', error);
     });
 
-module.exports = sequelize;
+// Sessions
+const sessionStore = new SequelizeStore({
+    db: sequelize,
+    expiration: 24 * 60 * 60 * 1000, // 1 day
+});
+
+module.exports = {sequelize, sessionStore};
