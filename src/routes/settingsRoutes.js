@@ -57,6 +57,7 @@ const router = express.Router();
  *       '404':
  *          description: Setting not found
  */
+
 router.get('/', isAuthenticated, settingsController.get);
 router.get('/:id', isAuthenticated, settingsController.getById);
 //router.delete('/:id', isAuthenticated, settingsController.delete);
