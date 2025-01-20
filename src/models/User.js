@@ -1,17 +1,14 @@
 const { DataTypes, Model } = require('sequelize');
-const bcrypt = require('bcrypt');
-const sequelize = require('../config/db'); // Assuming your Sequelize instance is in config/db.js
+const bcrypt = require('bcryptjs');
+const sequelize = require('../db'); // Assuming your Sequelize instance is in config/db.js
 
 class User extends Model {
   // Method to compare passwords
-  async comparePassword(inputPassword) {
-    return bcrypt.compare(inputPassword, this.password);
-  }
 }
 
 User.init(
   {
-    username: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -46,12 +43,12 @@ User.init(
     hooks: {
       // Hash the password before saving
       beforeCreate: async (user) => {
-        const salt = await bcrypt.genSalt(10);
+        //const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
       },
       beforeUpdate: async (user) => {
         if (user.changed('password')) {
-          const salt = await bcrypt.genSalt(10);
+          //const salt = await bcrypt.genSalt(10);
           user.password = await bcrypt.hash(user.password, salt);
         }
       },

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../models'); // Adjust to Sequelize's model usage
+const User = require('../models/userModel'); // Adjust to Sequelize's model usage
 const { checkRole } = require('../middlewares/roleMiddleware');
 require('dotenv').config();
 

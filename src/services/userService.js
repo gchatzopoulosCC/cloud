@@ -11,7 +11,7 @@ class UserService {
             return userModel.create({ 
                 name, 
                 email, 
-                password: hashedPassword 
+                password: hashedPassword
             });
         } catch (error) {
             if (error.name === 'SequelizeValidationError') {

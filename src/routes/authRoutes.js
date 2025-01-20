@@ -4,6 +4,7 @@ const router = express.Router();
 require('dotenv').config();
 
 // Serve registration form
+/*
 router.get('/register', (req, res) => {
   res.send(
     <form action="/auth/register" method="POST">
@@ -59,7 +60,7 @@ router.get('/reset-password/:token', (req, res) => {
       <button type="submit">Reset Password</button>
     </form>
   );
-});
+});*/
 
 // Handle user registration
 router.post('/register', authController.register);
