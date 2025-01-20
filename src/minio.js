@@ -27,4 +27,4 @@ const initializeMinio = async () => {
   }
 };
 
-module.exports = { minioClient, initializeMinio };
+module.exports = { minioClient, initializeMinio, bucketName };
