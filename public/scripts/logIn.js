@@ -21,6 +21,23 @@ let logIn = () => {
   }
 
   submitElement.disabled = true;
+
+  // fetch("http://localhost:3000/auth/login", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({ email, password }),
+  // });
+  // .then((res) => {
+  //   // if (res.status === 201) {
+  //   //   window.location.href = "file-manager.html";
+  //   //   sessionStorage.setItem("isLogged", "true");
+  //   // } else {
+  //   // }
+  // });
+  // console.log(res);
+  window.location.href = "file-manager.html";
   console.log(email, password);
 };
 
@@ -83,7 +100,6 @@ let choosePlan = (plan) => {
     }
 
     console.log(email, password, plan);
-
     window.location.href = "file-manager.html";
     sessionStorage.setItem("isLogged", "true");
   } else if (plan === "premium") {
@@ -95,9 +111,36 @@ let choosePlan = (plan) => {
       buttons[i].disabled = true;
     }
 
+    fetch("http://localhost:3000/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: "name", email, password, plan }),
+    }).then((res) => {
+      if (res.status === 201) {
+        window.location.href = "file-manager.html";
+        sessionStorage.setItem("isLogged", "true");
+      } else {
+        console.log(res);
+        window.location.href = "register.html";
+      }
+    });
+    // .then(() => {
+    //   window.location.href = "file-manager.html";
+    //   sessionStorage.setItem("isLogged", "true");
+    // });
+    // sessionStorage.setItem("isLogged", "true");
+
     console.log(email, password, plan);
 
-    window.location.href = "file-manager.html";
-    sessionStorage.setItem("isLogged", "true");
+    // window.location.href = "file-manager.html";
   }
 };
+
+fetch("http://localhost:3000/api/file", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});

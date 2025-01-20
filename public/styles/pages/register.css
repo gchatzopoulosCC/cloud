@@ -142,3 +142,33 @@ label {
 a {
   text-decoration: none;
 }
+
+@media (max-width: 768px) {
+  .checkbox > input::before {
+    height: 14px;
+    width: 14px;
+  }
+
+  .checkbox > label {
+    font-size: 0.875rem;
+  }
+
+  a {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkbox > input::before {
+    height: 12px;
+    width: 12px;
+  }
+
+  .checkbox > label {
+    font-size: 0.75rem;
+  }
+
+  a {
+    font-size: 0.75rem;
+  }
+}

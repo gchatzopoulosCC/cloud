@@ -116,3 +116,52 @@
   background-color: #444;
   color: #fff;
 }
+
+@media (max-width: 768px) {
+  .main {
+    min-height: calc(100vh - 200px);
+  }
+
+  .main__wrapper {
+    padding: 0 10px;
+  }
+
+  .btn-back {
+    font-size: 1.5rem;
+    left: 20px;
+    top: 12px;
+  }
+
+  .btn-arrow {
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    min-height: calc(100vh - 150px);
+  }
+
+  .tile {
+    padding: 40px 30px;
+    width: 100%;
+  }
+
+  .btn-info {
+    width: 100%;
+  }
+
+  .main__wrapper {
+    padding: 0 5px;
+  }
+
+  .btn-back {
+    font-size: 1.2rem;
+    left: 15px;
+    top: 10px;
+  }
+
+  .btn-arrow {
+    margin-right: 15px;
+  }
+}

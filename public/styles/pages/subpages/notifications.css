@@ -1,5 +1,6 @@
 body {
-  padding: 48px 55px;
+  min-height: calc(100vh - 100px);
+  padding: 50px 55px;
 }
 
 .title {
@@ -41,4 +42,20 @@ body {
   height: 1px;
   margin-bottom: 25px;
   background-color: #000;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 20px;
+  }
+
+  .line {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .line {
+    margin-bottom: 15px;
+  }
 }

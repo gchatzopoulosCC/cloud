@@ -53,3 +53,23 @@
   font-size: 1.2rem;
   font-weight: 300;
 }
+
+@media (max-width: 768px) {
+  .footer_copyright {
+    padding: 15px 0;
+  }
+
+  .footer_copyright > p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer_copyright {
+    padding: 10px 0;
+  }
+
+  .footer_copyright > p {
+    font-size: 0.875rem;
+  }
+}

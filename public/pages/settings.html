@@ -28,7 +28,11 @@
           <img src="../assets/images/logo.png" alt="logo" />
         </div>
         <nav class="navbar header_navbar">
-          <ul>
+          <ul class="header_navbar_list">
+            <li><a class="btn btn-light" href="./file-manager.html">File Manager</a></li>
+            <li><a class="btn btn-light">Settings</a></li>
+          </ul>
+          <ul class="header_navbar_burger" onclick="toggleBurger(event)">
             <li><a class="btn btn-light" href="./file-manager.html">File Manager</a></li>
             <li><a class="btn btn-light">Settings</a></li>
           </ul>
@@ -63,6 +67,7 @@
                   <h2 class="options_title">Preferences</h2>
                   <a href="./subpages/notifications.html" target="iframe" class="aside_option btn btn-light">Notifications</a>
                   <a href="./subpages/delete.html" target="iframe" class="aside_option btn btn-danger">Delete Account</a>
+                  <button onclick="logout()" class="aside_option btn btn-info" >Logout</button>
                 </div>
               </div>
             </aside>
@@ -77,8 +82,8 @@
         </div>
         <nav class="navbar footer_navbar">
           <ul class="footer_navbar_list">
-            <li class="footer_navbar_item"><a href="#" class="btn btn-link">Terms Of Service</a></li>
-            <li class="footer_navbar_item"><a href="#" class="btn btn-link">Privacy Policy</a></a></li>
+            <li class="footer_navbar_item"><a href="./term-of-service.html" class="btn btn-link">Terms Of Service</a></li>
+            <li class="footer_navbar_item"><a href="./privacy-policy.html" class="btn btn-link">Privacy Policy</a></a></li>
           </ul>
         </nav>
       <div class="footer_copyright">
@@ -86,5 +91,13 @@
       </div>
     </div>
     </footer>
+    <script src="../scripts/settings.js"></script>
+    <script>
+      let toggleBurger = function(e){
+            if(e.target.classList.contains('header_navbar_burger')){
+              e.target.classList.toggle('header_navbar_burger--active');
+            }
+          };
+    </script>
   </body>
 </html>

@@ -59,3 +59,13 @@ let validateOldEmail = (email) => {
   // TODO
   return true;
 };
+
+let deleteAccount = () => {
+  let confirm = document.getElementById("confirm-delete-account").value;
+  let confirmError = document.getElementById("confirm-delete-account-error");
+};
+
+let logout = () => {
+  sessionStorage.removeItem("isLogged");
+  window.location.href = "index.html";
+};
