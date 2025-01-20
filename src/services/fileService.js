@@ -44,6 +44,12 @@ class FileService {
         userId: userId,
       };
 
+      // Update the user storage
+      const user = await userService.getById(userId);
+      user.storage += fileSize;
+      await user.save();
+      
+      // Create the file in the database
       const savedFile = await filesModel.create(fileData);
       return savedFile;
     } catch (error) {
@@ -94,6 +100,11 @@ class FileService {
       throw new Error(`File with id ${id} not found`);
     }
     await minioClient.removeObject(process.env.MINIO_BUCKET_NAME, file.path);
+
+    // Update user storage
+    const user = await userService.getById(file.userId);
+    user.storage -= file.size;
+    await user.save();
     return await filesModel.destroy({ where: { id } });
   }
 

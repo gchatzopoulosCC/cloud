@@ -12,7 +12,6 @@ class FilesController extends GenericController {
     this.download = this.download.bind(this);
   }
 
-  // TODO: Create a middleware to add constraints to the file name
   async upload(req, res) {
     try {
       const userId = req.body.userId;
