@@ -1,0 +1,51 @@
+body {
+  padding: 130px 170px;
+}
+
+.title {
+  letter-spacing: 1.2px;
+  margin-bottom: 44px;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.description {
+  letter-spacing: 1px;
+  margin-bottom: 40px;
+  font-size: 2.1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.delete-container {
+  flex-direction: column;
+  display: flex;
+}
+
+.delete-input {
+  flex-direction: row;
+  display: flex;
+  gap: 25px;
+}
+
+label {
+  letter-spacing: 0.8px;
+  margin-bottom: 16px;
+  font-size: 1.8rem;
+}
+
+.form-control {
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-size: 1.8rem;
+  height: 88px;
+  width: 432px;
+}
+
+.btn-delete {
+  letter-spacing: 2px;
+  border-radius: 18px;
+  padding: 20px 32px;
+  font-size: 2rem;
+}

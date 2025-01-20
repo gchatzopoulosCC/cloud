@@ -1,0 +1,32 @@
+.header {
+  background-color: #2c2b2b;
+  justify-content: center;
+  display: flex;
+  height: 86px;
+}
+
+.header__wrapper {
+  align-items: center;
+  max-width: 1440px;
+  padding: 0 28px;
+  display: flex;
+  width: 100%;
+}
+
+.header_logo {
+  margin-right: 36px;
+}
+
+.header_navbar {
+  font-family: "Inter";
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  width: 100%;
+}
+
+.header_navbar > ul {
+  flex-direction: row;
+  display: flex;
+  gap: 20px;
+}

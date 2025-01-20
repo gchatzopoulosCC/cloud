@@ -1,0 +1,44 @@
+body {
+  padding: 48px 55px;
+}
+
+.title {
+  letter-spacing: 0.5px;
+  margin-bottom: 30px;
+  font-size: 2.1rem;
+}
+
+.checkbox-container {
+  margin-bottom: 28px;
+  align-items: center;
+  font-size: 1.3rem;
+  display: flex;
+}
+
+.checkbox {
+  appearance: none;
+}
+
+.checkbox::before {
+  border: 1px solid #000;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  font-size: 30px;
+  display: flex;
+  color: #fff;
+  height: 26px;
+  width: 26px;
+  content: "";
+}
+
+.checkbox:checked::before {
+  background-color: #000;
+  content: "✓";
+}
+
+.line {
+  height: 1px;
+  margin-bottom: 25px;
+  background-color: #000;
+}
