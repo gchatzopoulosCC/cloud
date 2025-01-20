@@ -2,6 +2,7 @@ const express = require('express');
 const authController = require('../controllers/authController');
 const router = express.Router();
 require('dotenv').config();
+const isAuthenticated = require('../middlewares/isAuthenticated');
 
 // Serve registration form
 /*
@@ -69,12 +70,12 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 
 // Handle user logout
-router.post('/logout', authController.logout);
+router.post('/logout', isAuthenticated, authController.logout);
 
 // Forgot password
-router.post('/forgot-password', authController.forgotPassword);
+//router.post('/forgot-password', authController.forgotPassword);
 
 // Reset password
-router.post('/reset-password/:token', authController.resetPassword);
+//router.post('/reset-password/:token', authController.resetPassword);
 
 module.exports = router;
