@@ -42,6 +42,11 @@ const User = sequelize.define("User", {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  storageUsed : {
+    type: DataTypes.DOUBLE,
+    allowNull: false,
+    defaultValue: 0
+  }
 });
 
 module.exports = User;
