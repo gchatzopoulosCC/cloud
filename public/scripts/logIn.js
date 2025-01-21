@@ -86,7 +86,7 @@ let register = () => {
   submitElement.disabled = true;
   sessionStorage.setItem("email", email);
   sessionStorage.setItem("password", password);
-  window.location.href = "plans.html";
+  window.location.href = "sign-in.html";
 };
 
 let validateEmail = (email) => {
