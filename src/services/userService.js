@@ -58,72 +58,33 @@ class UserService {
     });
   }
 
-  async update(id, args) {
-    let {
-      name = null,
-      email = null,
-      password = null,
-      plan = null,
-      notificationsEnabled = null,
-    } = args;
-
-    // Validatinon
-    if (plan && !validPlans.includes(plan)) {
-      throw new Error(
-        `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
-      );
-    }
-    if (
-      notificationsEnabled !== null &&
-      typeof notificationsEnabled !== "boolean"
-    ) {
-      throw new Error("notificationsEnabled must be a boolean");
-    }
-
+  async update(id, { name, email, plan, notificationsEnabled }) {
     const user = await this.getById(id);
-    if (!user) {
-      throw new Error(`User with id ${id} not found`);
-    }
-    let updateData = {};
 
-    if (name) {
-      updateData.name = name;
-    } else {
-      updateData.name = user.name;
-    }
+    const updateData = {
+      name: name || user.name,
+      email: email || user.email,
+    };
 
-    if (email) {
-      updateData.email = email;
-    } else {
-      updateData.email = user.email;
-    }
-
-    if (plan || notificationsEnabled) {
+    if (plan !== undefined || notificationsEnabled !== undefined) {
       const settings = await Settings.findByPk(user.settingsId);
-      plan ? (plan = plan) : (plan = settings.plan);
-      notificationsEnabled
-        ? (notificationsEnabled = notificationsEnabled)
-        : (notificationsEnabled = settings.notificationsEnabled);
+      const updatedSettings = {
+        plan: plan !== undefined ? plan : settings.plan,
+        notificationsEnabled:
+          notificationsEnabled !== undefined
+            ? notificationsEnabled
+            : settings.notificationsEnabled,
+      };
+
       const [newSettings] = await Settings.findOrCreate({
-        where: {
-          plan,
-          notificationsEnabled: notificationsEnabled,
-        },
+        where: updatedSettings,
       });
+
       updateData.settingsId = newSettings.id;
-    } else {
-      updateData.settingsId = user.settingsId;
     }
 
-    if (password) {
-      updateData.password = await bcrypt.hash(password, 10);
-    } else {
-      updateData.password = user.password;
-    }
-    console.log(updateData);
-
-    await userModel.update(updateData, { where: { id } });
-    return this.getById(id);
+    await user.update(updateData);
+    return user;
   }
 
   async delete(id) {
