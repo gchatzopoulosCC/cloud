@@ -24,7 +24,7 @@ let logIn = async () => {
 
   // Disable button to prevent multiple submissions
   submitElement.disabled = true;
-
+  
   // Send login request
   try {
     await fetch(`http://localhost:3000/auth/login`, {
@@ -52,41 +52,55 @@ let logIn = async () => {
   }
 };
 
-let register = () => {
-  let emailElement = document.getElementById("email");
-  let emailErrorElement = document.getElementById("email-error");
-  let passwordElement = document.getElementById("password");
-  let passwordErrorElement = document.getElementById("password-error");
-  let checkboxElement = document.getElementById("checkbox");
-  let checkboxErrorElement = document.getElementById("checkbox-error");
-  let submitElement = document.getElementById("submit");
+let register = async () => {
+  let emailElement = document.getElementById('email');
+  let emailErrorElement = document.getElementById('email-error');
+  let passwordElement = document.getElementById('password');
+  let passwordErrorElement = document.getElementById('password-error');
+  let checkboxElement = document.getElementById('checkbox');
+  let checkboxErrorElement = document.getElementById('checkbox-error');
+  let submitElement = document.getElementById('submit');
 
   let email = emailElement.value;
   let password = passwordElement.value;
   if (!validateEmail(email)) {
-    emailErrorElement.innerHTML = "Please enter a valid email";
+    emailErrorElement.innerHTML = 'Please enter a valid email';
     return;
   } else {
-    emailErrorElement.innerHTML = "";
+    emailErrorElement.innerHTML = '';
   }
   if (!validatePassword(password)) {
-    passwordErrorElement.innerHTML = "Password must be at least 6 characters";
+    passwordErrorElement.innerHTML = 'Password must be at least 6 characters';
     return;
   } else {
-    passwordErrorElement.innerHTML = "";
+    passwordErrorElement.innerHTML = '';
   }
 
   if (!checkboxElement.checked) {
-    checkboxErrorElement.innerHTML = "Please agree to terms and conditions";
+    checkboxErrorElement.innerHTML = 'Please agree to terms and conditions';
     return;
   } else {
-    checkboxErrorElement.innerHTML = "";
+    checkboxErrorElement.innerHTML = '';
   }
 
   submitElement.disabled = true;
-  sessionStorage.setItem("email", email);
-  sessionStorage.setItem("password", password);
-  window.location.href = "plans.html";
+
+  await fetch('http://localhost:3000/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name: 'test', email, password, plan: 'free' }),
+  }).then((res) => {
+    // Validate the response
+    if (res.status !== 201) {
+      console.log(res);
+      window.location.href = 'register.html';
+    }
+
+    // Redirect to the plans page
+    window.location.href = 'plans.html';
+  });
 };
 
 let validateEmail = (email) => {
@@ -100,16 +114,16 @@ let validatePassword = (password) => {
 };
 
 let choosePlan = (plan) => {
-  let buttons = document.getElementsByClassName("btn-submit");
-  if (plan === "free") {
-    let email = sessionStorage.getItem("email");
-    let password = sessionStorage.getItem("password");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("password");
+  let buttons = document.getElementsByClassName('btn-submit');
+  if (plan === 'free') {
+    let email = sessionStorage.getItem('email');
+    let password = sessionStorage.getItem('password');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('password');
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].disabled = true;
     }
-
+    
     window.location.href = "file-manager.html";
     sessionStorage.setItem("isLogged", "true");
   } else if (plan === "premium") {
@@ -121,16 +135,16 @@ let choosePlan = (plan) => {
       buttons[i].disabled = true;
     }
 
-    fetch("http://localhost:3000/auth/register", {
-      method: "POST",
+    fetch('http://localhost:3000/auth/register', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: "name", email, password, plan }),
+      body: JSON.stringify({ name: 'name', email, password, plan }),
     }).then((res) => {
       if (res.status === 201) {
-        window.location.href = "file-manager.html";
-        sessionStorage.setItem("isLogged", "true");
+        window.location.href = 'sign-in.html';
+        sessionStorage.setItem('isLogged', 'true');
       } else {
         window.location.href = "register.html";
       }
