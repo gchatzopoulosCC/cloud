@@ -106,7 +106,7 @@ class authController {
         maxAge: 3600000, // 1 hour
       });
 
-      res.json("Login successful");
+      res.json({message: "Login successful", user: user});
     } catch (error) {
       res.status(500).json("Server error");
     }

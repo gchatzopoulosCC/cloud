@@ -18,7 +18,7 @@ let logIn = async () => {
     return;
   }
   if (!validatePassword(password)) {
-    passwordErrorElement.textContent = "Password must be at least 6 characters";
+    passwordErrorElement.textContent = "Password must be at least 8 characters";
     return;
   }
 
@@ -94,7 +94,6 @@ let register = async () => {
   }).then((res) => {
     // Validate the response
     if (res.status !== 201) {
-      console.log(res);
       window.location.href = "register.html";
     } else {
       // Store email and password in session storage
@@ -121,11 +120,12 @@ let choosePlan = (plan) => {
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].disabled = true;
   }
+  const userId = sessionStorage.getItem("userId");
   const email = sessionStorage.getItem("email");
   const password = sessionStorage.getItem("password");
 
-  fetch("http://localhost:3000/auth/register", {
-    method: "POST",
+  fetch(`http://localhost:3000/api/user/${userId}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
@@ -137,7 +137,7 @@ let choosePlan = (plan) => {
       window.location.href = "sign-in.html";
       sessionStorage.setItem("isLogged", "true");
     } else {
-      window.location.href = "register.html";
+      window.location.href = "sign-in.html";
     }
   });
 };
