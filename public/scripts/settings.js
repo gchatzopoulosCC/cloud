@@ -65,7 +65,17 @@ let deleteAccount = () => {
   let confirmError = document.getElementById("confirm-delete-account-error");
 };
 
-let logout = () => {
-  sessionStorage.removeItem("isLogged");
-  window.location.href = "index.html";
+let logout = async () => {
+  try {
+    await fetch("http://localhost:3000/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    sessionStorage.removeItem("isLogged");
+    window.location.href = "index.html";
+  } catch (error) {
+    console.log(error);
+  }
 };

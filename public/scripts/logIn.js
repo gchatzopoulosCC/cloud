@@ -39,7 +39,7 @@ let logIn = async () => {
           console.log(data);
           sessionStorage.setItem("user", JSON.stringify(data));
           sessionStorage.setItem("isLogged", "true");
-          // window.location.href = "file-manager.html";
+          window.location.href = "file-manager.html";
         } else {
           passwordErrorElement.textContent = data.message.password;
           emailErrorElement.textContent = data.message.email;
@@ -160,7 +160,7 @@ let choosePlan = (plan) => {
     },
     body: JSON.stringify({ name: "name", email, password, plan }),
   }).then((res) => {
-    if (res.status === 201 || res.status === 200) {
+    if (res.status === 204) {
       sessionStorage.setItem("isLogged", "true");
       window.location.href = "file-manager.html";
     } else {
