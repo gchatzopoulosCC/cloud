@@ -97,10 +97,12 @@ let register = async () => {
       console.log(res);
       window.location.href = "register.html";
     } else {
+      // Store email and password in session storage
+      sessionStorage.setItem("email", email);
+      sessionStorage.setItem("password", password);
       // Redirect to the plans page
       window.location.href = "plans.html";
     }
-
   });
 };
 
@@ -116,39 +118,26 @@ let validatePassword = (password) => {
 
 let choosePlan = (plan) => {
   let buttons = document.getElementsByClassName("btn-submit");
-  if (plan === "free") {
-    let email = sessionStorage.getItem("email");
-    let password = sessionStorage.getItem("password");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("password");
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].disabled = true;
-    }
-
-    window.location.href = "file-manager.html";
-    sessionStorage.setItem("isLogged", "true");
-  } else if (plan === "premium") {
-    let email = sessionStorage.getItem("email");
-    let password = sessionStorage.getItem("password");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("password");
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].disabled = true;
-    }
-
-    fetch("http://localhost:3000/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: "name", email, password, plan }),
-    }).then((res) => {
-      if (res.status === 201) {
-        window.location.href = "sign-in.html";
-        sessionStorage.setItem("isLogged", "true");
-      } else {
-        window.location.href = "register.html";
-      }
-    });
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].disabled = true;
   }
+  const email = sessionStorage.getItem("email");
+  const password = sessionStorage.getItem("password");
+
+  fetch("http://localhost:3000/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: "name", email, password, plan }),
+  }).then((res) => {
+    if (res.status === 201) {
+      sessionStorage.removeItem("email");
+      sessionStorage.removeItem("password");
+      window.location.href = "sign-in.html";
+      sessionStorage.setItem("isLogged", "true");
+    } else {
+      window.location.href = "register.html";
+    }
+  });
 };
