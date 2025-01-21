@@ -28,7 +28,7 @@ class authController {
       return res
         .status(400)
         .json(
-          'Password must be at least 8 characters long and include uppercase letters, lowercase letters, and numbers.'
+          "Password must be at least 8 characters long and include uppercase letters, lowercase letters, and numbers."
         );
     }
     if (!validPlans.includes(plan)) {
@@ -56,7 +56,7 @@ class authController {
       // Check if email already exists
       const existingUser = await userModel.findOne({ where: { email } });
       if (existingUser) {
-        return res.status(400).json('Email is already registered.');
+        return res.status(400).json("Email is already registered.");
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -68,11 +68,11 @@ class authController {
         settingsId: settings.id,
       });
 
-      res.status(201).json('User registered successfully.');
+      res.status(201).json("User registered successfully.");
     } catch (error) {
       res
         .status(500)
-        .json('Server error during registration: ' + error.message);
+        .json("Server error during registration: " + error.message);
     }
   }
 
@@ -82,18 +82,18 @@ class authController {
     try {
       const user = await userModel.findOne({ where: { email } });
       if (!user) {
-        return res.status(400).json('Invalid email or password.');
+        return res.status(400).json("Invalid email or password.");
       }
 
       let isMatch;
       try {
         isMatch = await bcrypt.compare(password, user.password);
       } catch (error) {
-        return res.status(500).json('Cannot compare passwords');
+        return res.status(500).json("Cannot compare passwords");
       }
 
       if (!isMatch) {
-        return res.status(400).json('Invalid email or password.');
+        return res.status(400).json("Invalid email or password.");
       }
 
       // Save user ID in session
@@ -106,19 +106,19 @@ class authController {
         maxAge: 3600000, // 1 hour
       });
 
-      res.json('Login successful');
+      res.json("Login successful");
     } catch (error) {
-      res.status(500).json('Server error');
+      res.status(500).json("Server error");
     }
   }
 
   // User logout
   async logout(req, res) {
     req.session.destroy((err) => {
-      if (err) return res.status(500).json('Error logging out');
-      res.clearCookie('connect.sid'); // Clear session cookie
-      res.clearCookie('loggedIn'); // Clear custom cookie
-      res.json('Logout successful');
+      if (err) return res.status(500).json("Error logging out");
+      res.clearCookie("connect.sid"); // Clear session cookie
+      res.clearCookie("loggedIn"); // Clear custom cookie
+      res.json("Logout successful");
     });
   }
 
@@ -127,15 +127,15 @@ class authController {
     const { email } = req.body;
     try {
       const user = await userModel.findOne({ where: { email } });
-      if (!user) return res.status(404).json('User not found');
-      const resetToken = crypto.randomBytes(32).toString('hex');
+      if (!user) return res.status(404).json("User not found");
+      const resetToken = crypto.randomBytes(32).toString("hex");
       user.resetPasswordToken = resetToken;
       user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
       await user.save();
 
-      res.json('Password reset email sent.');
+      res.json("Password reset email sent.");
     } catch (error) {
-      res.status(500).json('Server error');
+      res.status(500).json("Server error");
     }
   }
 
@@ -151,7 +151,7 @@ class authController {
         },
       });
       if (!user)
-        return res.status(400).json('Invalid or expired password reset token.');
+        return res.status(400).json("Invalid or expired password reset token.");
 
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
@@ -159,9 +159,9 @@ class authController {
       user.resetPasswordExpires = null;
       await user.save();
 
-      res.json('Password reset successfully');
+      res.json("Password reset successfully");
     } catch (error) {
-      res.status(500).json('Server error during password reset');
+      res.status(500).json("Server error during password reset");
     }
   }
 }
