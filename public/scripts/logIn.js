@@ -96,10 +96,11 @@ let register = async () => {
     if (res.status !== 201) {
       console.log(res);
       window.location.href = "register.html";
+    } else {
+      // Redirect to the plans page
+      window.location.href = "plans.html";
     }
 
-    // Redirect to the plans page
-    window.location.href = "plans.html";
   });
 };
 
