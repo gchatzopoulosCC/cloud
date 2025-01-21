@@ -18,7 +18,7 @@ let search = () => {
     }
   }
 };
-
+ 
 clearSearch = () => {
   let input = document.getElementsByClassName("search_input")[0];
   input.value = "";
