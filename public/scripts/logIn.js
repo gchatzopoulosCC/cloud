@@ -1,12 +1,12 @@
-let logIn = async () => {
-  let emailElement = document.getElementById("email");
-  let emailErrorElement = document.getElementById("email-error");
-  let passwordElement = document.getElementById("password");
-  let passwordErrorElement = document.getElementById("password-error");
-  let submitElement = document.getElementById("submit");
+const logIn = async () => {
+  const emailElement = document.getElementById("email");
+  const emailErrorElement = document.getElementById("email-error");
+  const passwordElement = document.getElementById("password");
+  const passwordErrorElement = document.getElementById("password-error");
+  const submitElement = document.getElementById("submit");
 
-  let email = emailElement.value.trim();
-  let password = passwordElement.value.trim();
+  const email = emailElement.value.trim();
+  const password = passwordElement.value.trim();
 
   // Reset errors
   emailErrorElement.textContent = "";
@@ -54,17 +54,17 @@ let logIn = async () => {
   }
 };
 
-let register = async () => {
-  let emailElement = document.getElementById("email");
-  let emailErrorElement = document.getElementById("email-error");
-  let passwordElement = document.getElementById("password");
-  let passwordErrorElement = document.getElementById("password-error");
-  let checkboxElement = document.getElementById("checkbox");
-  let checkboxErrorElement = document.getElementById("checkbox-error");
-  let submitElement = document.getElementById("submit");
+const register = async () => {
+  const emailElement = document.getElementById("email");
+  const emailErrorElement = document.getElementById("email-error");
+  const passwordElement = document.getElementById("password");
+  const passwordErrorElement = document.getElementById("password-error");
+  const checkboxElement = document.getElementById("checkbox");
+  const checkboxErrorElement = document.getElementById("checkbox-error");
+  const submitElement = document.getElementById("submit");
 
-  let email = emailElement.value;
-  let password = passwordElement.value;
+  const email = emailElement.value;
+  const password = passwordElement.value;
   if (!validateEmail(email)) {
     emailErrorElement.innerHTML = "Please enter a valid email";
     return;
@@ -72,7 +72,7 @@ let register = async () => {
     emailErrorElement.innerHTML = "";
   }
   if (!validatePassword(password)) {
-    passwordErrorElement.innerHTML = "Password must be at least 6 characters";
+    passwordErrorElement.innerHTML = "Password must be at least 8 characters";
     return;
   } else {
     passwordErrorElement.innerHTML = "";
@@ -101,10 +101,6 @@ let register = async () => {
       passwordErrorElement.innerText = res.message.password;
       submitElement.disabled = false;
     } else {
-      //Store user details
-      // console.log(res.user);
-      // sessionStorage.setItem("user", JSON.stringify(res.user));
-
       // Redirect to the plans page
       await fetch(`http://localhost:3000/auth/login`, {
         method: "POST",
@@ -133,18 +129,18 @@ let register = async () => {
   });
 };
 
-let validateEmail = (email) => {
+const validateEmail = (email) => {
   return email.match(
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   );
 };
 
-let validatePassword = (password) => {
+const validatePassword = (password) => {
   return password.length >= 8;
 };
 
-let choosePlan = (plan) => {
-  let buttons = document.getElementsByClassName("btn-submit");
+const choosePlan = (plan) => {
+  const buttons = document.getElementsByClassName("btn-submit");
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].disabled = true;
   }
