@@ -10,15 +10,17 @@ class UserService {
       throw new Error("Password is required");
     }
     if (!validPlans.includes(plan)) {
-        throw new Error(`Invalid plan. Valid plans are: ${validPlans.join(', ')}`);
+      throw new Error(
+        `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
+      );
     }
-    if (typeof notificationsEnabled !== 'boolean') {
-        throw new Error('notificationsEnabled must be a boolean');
+    if (typeof notificationsEnabled !== "boolean") {
+      throw new Error("notificationsEnabled must be a boolean");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
-        // Get the id of the settings configuration
+      // Get the id of the settings configuration
       // or create one if it doesn't exist
       const [settings] = await Settings.findOrCreate({
         where: {
@@ -36,52 +38,89 @@ class UserService {
 
       return user;
     } catch (error) {
-        if (error.name === 'SequelizeValidationError') {
-            const messages = error.errors.map(err => err.message);
-            throw new Error(messages.join(', '));
-        }
-        throw error;
+      if (error.name === "SequelizeValidationError") {
+        const messages = error.errors.map((err) => err.message);
+        throw new Error(messages.join(", "));
+      }
+      throw error;
     }
   }
 
   async get() {
     return userModel.findAll({
-        include: Settings,
+      include: Settings,
     });
   }
 
   async getById(id) {
     return userModel.findByPk(id, {
-        include: Settings,
+      include: Settings,
     });
   }
 
   async update(id, args) {
-    const { name, email, password, plan, notificationsEnabled } = args;
+    let {
+      name = null,
+      email = null,
+      password = null,
+      plan = null,
+      notificationsEnabled = null,
+    } = args;
 
     // Validatinon
     if (plan && !validPlans.includes(plan)) {
-        throw new Error(`Invalid plan. Valid plans are: ${validPlans.join(', ')}`);
+      throw new Error(
+        `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
+      );
     }
-    if (notificationsEnabled !== undefined && typeof notificationsEnabled !== 'boolean') {
-        throw new Error('notificationsEnabled must be a boolean');
+    if (
+      notificationsEnabled !== null &&
+      typeof notificationsEnabled !== "boolean"
+    ) {
+      throw new Error("notificationsEnabled must be a boolean");
     }
 
-    const updateData = { name, email };
-
-    if (plan && notificationsEnabled !== undefined) {
-        const [settings] = await Settings.findOrCreate({
-            where: {
-                plan,
-                notificationsEnabled: notificationsEnabled,
-            },
-        });
-        updateData.settingsId = settings.id;
+    const user = await this.getById(id);
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
     }
-        
+    let updateData = {};
+
+    if (name) {
+      updateData.name = name;
+    } else {
+      updateData.name = user.name;
+    }
+
+    if (email) {
+      updateData.email = email;
+    } else {
+      updateData.email = user.email;
+    }
+
+    if (plan || notificationsEnabled) {
+      const settings = await Settings.findByPk(user.settingsId);
+      plan ? (plan = plan) : (plan = settings.plan);
+      notificationsEnabled
+        ? (notificationsEnabled = notificationsEnabled)
+        : (notificationsEnabled = settings.notificationsEnabled);
+      const [newSettings] = await Settings.findOrCreate({
+        where: {
+          plan,
+          notificationsEnabled: notificationsEnabled,
+        },
+      });
+      updateData.settingsId = newSettings.id;
+    } else {
+      updateData.settingsId = user.settingsId;
+    }
+
     if (password) {
       updateData.password = await bcrypt.hash(password, 10);
+    } else {
+      updateData.password = user.password;
     }
+    console.log(updateData);
 
     await userModel.update(updateData, { where: { id } });
     return this.getById(id);

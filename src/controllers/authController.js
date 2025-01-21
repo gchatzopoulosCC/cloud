@@ -25,11 +25,13 @@ class authController {
       !/[a-z]/.test(password) ||
       !/[0-9]/.test(password)
     ) {
-      return res
-        .status(400)
-        .json(
-          "Password must be at least 8 characters long and include uppercase letters, lowercase letters, and numbers."
-        );
+      return res.status(400).json({
+        message: {
+          password:
+            "Password must be at least 8 characters long and include uppercase letters, lowercase letters, and numbers.",
+          email: "",
+        },
+      });
     }
     if (!validPlans.includes(plan)) {
       throw new Error(
@@ -56,11 +58,13 @@ class authController {
       // Check if email already exists
       const existingUser = await userModel.findOne({ where: { email } });
       if (existingUser) {
-        return res.status(400).json("Email is already registered.");
+        return res.status(400).json({
+          message: { email: "Email is already registered.", password: "" },
+        });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      await userModel.create({
+      const user = await userModel.create({
         name,
         email,
         password: hashedPassword,
@@ -84,7 +88,12 @@ class authController {
     try {
       const user = await userModel.findOne({ where: { email } });
       if (!user) {
-        return res.status(400).json("Invalid email or password.");
+        return res.status(400).json({
+          message: {
+            email: "Invalid email.",
+            password: "",
+          },
+        });
       }
 
       let isMatch;
@@ -95,7 +104,9 @@ class authController {
       }
 
       if (!isMatch) {
-        return res.status(400).json("Invalid email or password.");
+        return res
+          .status(400)
+          .json({ message: { email: "", password: "Invalid password." } });
       }
 
       // Save user ID in session
@@ -107,7 +118,7 @@ class authController {
         secure: process.env.NODE_ENV === "production", // HTTPS only in production
         maxAge: 3600000, // 1 hour
       });
-      
+
       res.json({ message: "Login successful", user: user });
     } catch (error) {
       res.status(500).json("Server error");

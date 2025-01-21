@@ -34,16 +34,18 @@ let logIn = async () => {
       },
       body: JSON.stringify({ email, password }),
     }).then((res) => {
-      if (res.status === 200) {
-        window.location.href = "file-manager.html";
-        sessionStorage.setItem("isLogged", "true");
-      } else {
-        return res.json().then((data) => {
-          throw new Error(data.message || "Login failed");
-        });
-      }
-      console.log(res);
-      window.location.href = "sign-in.html";
+      res.json().then((data) => {
+        if (res.status === 200 || res.status === 201) {
+          console.log(data);
+          sessionStorage.setItem("user", JSON.stringify(data));
+          sessionStorage.setItem("isLogged", "true");
+          // window.location.href = "file-manager.html";
+        } else {
+          passwordErrorElement.textContent = data.message.password;
+          emailErrorElement.textContent = data.message.email;
+          submitElement.disabled = false; // Re-enable button
+        }
+      });
     });
   } catch (error) {
     passwordErrorElement.textContent = "An error occurred. Please try again.";
@@ -91,16 +93,42 @@ let register = async () => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ name: "test", email, password, plan: "free" }),
-  }).then((res) => {
+  }).then(async (res) => {
     // Validate the response
     if (res.status !== 201) {
-      window.location.href = "register.html";
+      // window.location.href = "register.html";
+      emailErrorElement.innerText = res.message.email;
+      passwordErrorElement.innerText = res.message.password;
+      submitElement.disabled = false;
     } else {
-      // Store email and password in session storage
-      sessionStorage.setItem("email", email);
-      sessionStorage.setItem("password", password);
+      //Store user details
+      // console.log(res.user);
+      // sessionStorage.setItem("user", JSON.stringify(res.user));
+
       // Redirect to the plans page
-      window.location.href = "plans.html";
+      await fetch(`http://localhost:3000/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      }).then((res) =>
+        res
+          .json()
+          .then((data) => {
+            if (res.status === 200 || res.status === 201) {
+              sessionStorage.setItem("user", JSON.stringify(data.user));
+              window.location.href = "plans.html";
+            } else {
+              return res.json().then((data) => {
+                throw new Error(data.message || "Login failed");
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      );
     }
   });
 };
@@ -120,9 +148,10 @@ let choosePlan = (plan) => {
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].disabled = true;
   }
-  const userId = sessionStorage.getItem("userId");
-  const email = sessionStorage.getItem("email");
-  const password = sessionStorage.getItem("password");
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const userId = user.id;
+  const email = user.email;
+  const password = user.password;
 
   fetch(`http://localhost:3000/api/user/${userId}`, {
     method: "PUT",
@@ -131,11 +160,9 @@ let choosePlan = (plan) => {
     },
     body: JSON.stringify({ name: "name", email, password, plan }),
   }).then((res) => {
-    if (res.status === 201) {
-      sessionStorage.removeItem("email");
-      sessionStorage.removeItem("password");
-      window.location.href = "sign-in.html";
+    if (res.status === 201 || res.status === 200) {
       sessionStorage.setItem("isLogged", "true");
+      window.location.href = "file-manager.html";
     } else {
       window.location.href = "sign-in.html";
     }
