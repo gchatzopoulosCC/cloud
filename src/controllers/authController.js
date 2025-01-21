@@ -1,9 +1,9 @@
 //const User = require('../models/User');
-const userModel = require('../models/userModel');
-const crypto = require('crypto');
-const bcrypt = require('bcryptjs');
-require('dotenv').config();
-const { Settings, validPlans } = require('../models/settingsModel');
+const userModel = require("../models/userModel");
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
+require("dotenv").config();
+const { Settings, validPlans } = require("../models/settingsModel");
 
 // User registration
 class authController {
@@ -33,7 +33,7 @@ class authController {
     }
     if (!validPlans.includes(plan)) {
       throw new Error(
-        `Invalid plan. Valid plans are: ${validPlans.join(', ')}`
+        `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
       );
     }
 
@@ -49,7 +49,7 @@ class authController {
       // Validation
       if (plan && !validPlans.includes(plan)) {
         throw new Error(
-          `Invalid plan. Valid plans are: ${validPlans.join(', ')}`
+          `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
         );
       }
 
@@ -68,7 +68,8 @@ class authController {
         settingsId: settings.id,
       });
 
-      res.status(201).json("User registered successfully.");
+      setSessionAndCookie(req, res);
+      res.status(201).json({ message: "User registered successfully.", user: user });
     } catch (error) {
       res
         .status(500)
@@ -96,17 +97,8 @@ class authController {
         return res.status(400).json("Invalid email or password.");
       }
 
-      // Save user ID in session
-      req.session.userId = user.id;
-
-      // Set a custom cookie
-      res.cookie('loggedIn', true, {
-        httpOnly: true, // Prevent client-side access
-        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-        maxAge: 3600000, // 1 hour
-      });
-
-      res.json({message: "Login successful", user: user});
+      this.setSessionAndCookie(req, res);
+      res.json({ message: "Login successful", user: user });
     } catch (error) {
       res.status(500).json("Server error");
     }
@@ -119,6 +111,18 @@ class authController {
       res.clearCookie("connect.sid"); // Clear session cookie
       res.clearCookie("loggedIn"); // Clear custom cookie
       res.json("Logout successful");
+    });
+  }
+
+  async setSessionAndCookie(req, res) {
+    // Save user ID in session
+    req.session.userId = user.id;
+
+    // Set a custom cookie
+    res.cookie("loggedIn", true, {
+      httpOnly: true, // Prevent client-side access
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      maxAge: 3600000, // 1 hour
     });
   }
 
