@@ -22,21 +22,22 @@ let logIn = () => {
 
   submitElement.disabled = true;
 
-  // fetch("http://localhost:3000/auth/login", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({ email, password }),
-  // });
-  // .then((res) => {
-  //   // if (res.status === 201) {
-  //   //   window.location.href = "file-manager.html";
-  //   //   sessionStorage.setItem("isLogged", "true");
-  //   // } else {
-  //   // }
-  // });
-  // console.log(res);
+  fetch("http://localhost:3000/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  })
+  .then((res) => {
+    if (res.status === 201) {
+      window.location.href = "file-manager.html";
+      sessionStorage.setItem("isLogged", "true");
+    } else {
+    }
+  });
+
+  console.log(res);
   window.location.href = "file-manager.html";
   console.log(email, password);
 };
