@@ -1,9 +1,9 @@
 //const User = require('../models/User');
-const userModel = require("../models/userModel");
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
-require("dotenv").config();
-const { Settings, validPlans } = require("../models/settingsModel");
+const userModel = require('../models/userModel');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+require('dotenv').config();
+const { Settings, validPlans } = require('../models/settingsModel');
 
 // User registration
 class authController {
@@ -27,13 +27,13 @@ class authController {
     ) {
       return res
         .status(400)
-        .send(
-          "Password must be at least 8 characters long and include uppercase letters, lowercase letters, and numbers."
+        .json(
+          'Password must be at least 8 characters long and include uppercase letters, lowercase letters, and numbers.'
         );
     }
     if (!validPlans.includes(plan)) {
       throw new Error(
-        `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
+        `Invalid plan. Valid plans are: ${validPlans.join(', ')}`
       );
     }
 
@@ -46,27 +46,33 @@ class authController {
         },
       });
 
-      // Validatinon
+      // Validation
       if (plan && !validPlans.includes(plan)) {
         throw new Error(
-          `Invalid plan. Valid plans are: ${validPlans.join(", ")}`
+          `Invalid plan. Valid plans are: ${validPlans.join(', ')}`
         );
       }
 
       // Check if email already exists
       const existingUser = await userModel.findOne({ where: { email } });
       if (existingUser) {
-        return res.status(400).send("Email is already registered.");
+        return res.status(400).json('Email is already registered.');
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      await userModel.create({ name, email, password: hashedPassword, plan, settingsId: settings.id });
+      await userModel.create({
+        name,
+        email,
+        password: hashedPassword,
+        plan,
+        settingsId: settings.id,
+      });
 
-      res.status(201).send("User registered successfully.");
+      res.status(201).json('User registered successfully.');
     } catch (error) {
       res
         .status(500)
-        .send("Server error during registration: " + error.message);
+        .json('Server error during registration: ' + error.message);
     }
   }
 
@@ -76,43 +82,43 @@ class authController {
     try {
       const user = await userModel.findOne({ where: { email } });
       if (!user) {
-        return res.status(400).send("Invalid email or password.");
+        return res.status(400).json('Invalid email or password.');
       }
 
       let isMatch;
       try {
         isMatch = await bcrypt.compare(password, user.password);
       } catch (error) {
-        return res.status(500).send("Cannot compare passwords");
+        return res.status(500).json('Cannot compare passwords');
       }
 
       if (!isMatch) {
-        return res.status(400).send("Invalid email or password.");
+        return res.status(400).json('Invalid email or password.');
       }
 
       // Save user ID in session
       req.session.userId = user.id;
 
       // Set a custom cookie
-      res.cookie("loggedIn", true, {
+      res.cookie('loggedIn', true, {
         httpOnly: true, // Prevent client-side access
-        secure: process.env.NODE_ENV === "production", // HTTPS only in production
+        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
         maxAge: 3600000, // 1 hour
       });
 
-      res.send("Login successful");
+      res.json('Login successful');
     } catch (error) {
-      res.status(500).send("Server error");
+      res.status(500).json('Server error');
     }
   }
 
   // User logout
   async logout(req, res) {
     req.session.destroy((err) => {
-      if (err) return res.status(500).send("Error logging out");
-      res.clearCookie("connect.sid"); // Clear session cookie
-      res.clearCookie("loggedIn"); // Clear custom cookie
-      res.send("Logout successful");
+      if (err) return res.status(500).json('Error logging out');
+      res.clearCookie('connect.sid'); // Clear session cookie
+      res.clearCookie('loggedIn'); // Clear custom cookie
+      res.json('Logout successful');
     });
   }
 
@@ -121,15 +127,15 @@ class authController {
     const { email } = req.body;
     try {
       const user = await userModel.findOne({ where: { email } });
-      if (!user) return res.status(404).send("User not found");
-      const resetToken = crypto.randomBytes(32).toString("hex");
+      if (!user) return res.status(404).json('User not found');
+      const resetToken = crypto.randomBytes(32).toString('hex');
       user.resetPasswordToken = resetToken;
       user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
       await user.save();
 
-      res.send("Password reset email sent.");
+      res.json('Password reset email sent.');
     } catch (error) {
-      res.status(500).send("Server error");
+      res.status(500).json('Server error');
     }
   }
 
@@ -145,7 +151,7 @@ class authController {
         },
       });
       if (!user)
-        return res.status(400).send("Invalid or expired password reset token.");
+        return res.status(400).json('Invalid or expired password reset token.');
 
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
@@ -153,9 +159,9 @@ class authController {
       user.resetPasswordExpires = null;
       await user.save();
 
-      res.send("Password reset successfully");
+      res.json('Password reset successfully');
     } catch (error) {
-      res.status(500).send("Server error during password reset");
+      res.status(500).json('Server error during password reset');
     }
   }
 }
