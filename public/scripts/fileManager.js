@@ -75,19 +75,52 @@ let uploadFile = () => {
     .then((data) => console.log(data));
 };
 
+// let editFile = (event) => {
+//   let names = [].slice.call(document.getElementsByClassName("file_name_text"));
+//   let id = names.indexOf(
+//     event.target.parentElement.parentElement.children[0].children[1]
+//   );
+//   let name = names[id].innerText;
+//   let input = document.createElement("input");
+//   input.value = name;
+//   input.addEventListener("focusout", () => {
+//     let p = document.createElement("p");
+//     p.classList.add("file_name_text");
+//     p.innerText = input.value;
+//     input.replaceWith(p);
+//   });
+//   names[id].replaceWith(input);
+//   input.select();
+// };
+
 let editFile = (event) => {
   let names = [].slice.call(document.getElementsByClassName("file_name_text"));
   let id = names.indexOf(
     event.target.parentElement.parentElement.children[0].children[1]
   );
+  let fileId = files[id].id; // Assuming `files` is an array of file objects with an `id` property
   let name = names[id].innerText;
   let input = document.createElement("input");
   input.value = name;
   input.addEventListener("focusout", () => {
-    let p = document.createElement("p");
-    p.classList.add("file_name_text");
-    p.innerText = input.value;
-    input.replaceWith(p);
+    let newName = input.value;
+    fetch(`http://localhost:3000/file/${fileId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: newName }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        let p = document.createElement("p");
+        p.classList.add("file_name_text");
+        p.innerText = data.name;
+        input.replaceWith(p);
+      })
+      .catch((error) => {
+        console.error("Error renaming file:", error);
+      });
   });
   names[id].replaceWith(input);
   input.select();
@@ -98,13 +131,28 @@ let deleteFile = (event) => {
     document.getElementsByClassName("main_section_file")
   );
   let id = fileElements.indexOf(event.target.parentElement.parentElement);
-  fileElements[id].remove();
+  let fileId = files[id].id; 
+
+  fetch(`http://localhost:3000/file/${fileId}`, {
+    method: "DELETE",
+  })
+    .then((res) => {
+      if (res.status === 204) {
+        fileElements[id].remove();
+      } else {
+        console.error("Error deleting file");
+      }
+    })
+    .catch((error) => {
+      console.error("Error deleting file:", error);
+    });
 };
 
 let renderFiles = () => {
   let mainSection = document.getElementById("files");
+  mainSection.innerHTML = ""; 
   for (let i = 0; i < files.length; i++) {
-    let f = file.replace("{filename}", files[i]);
+    let f = file.replace("{filename}", files[i].name);
     mainSection.innerHTML += f;
   }
 };
