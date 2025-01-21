@@ -104,7 +104,7 @@ let editFile = (event) => {
   input.value = name;
   input.addEventListener("focusout", () => {
     let newName = input.value;
-    fetch(`http://localhost:3000/file/${fileId}`, {
+    fetch(`http://localhost:3000/api/file`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -133,7 +133,7 @@ let deleteFile = (event) => {
   let id = fileElements.indexOf(event.target.parentElement.parentElement);
   let fileId = files[id].id; 
 
-  fetch(`http://localhost:3000/file/${fileId}`, {
+  fetch(`http://localhost:3000/api/file`, {
     method: "DELETE",
   })
     .then((res) => {
