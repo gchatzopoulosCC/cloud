@@ -68,7 +68,7 @@ class authController {
         settingsId: settings.id,
       });
 
-      setSessionAndCookie(req, res);
+      this.setSessionAndCookie(req, res);
       res.status(201).json({ message: "User registered successfully.", user: user });
     } catch (error) {
       res
