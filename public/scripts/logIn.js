@@ -1,45 +1,55 @@
-let logIn = () => {
+let logIn = async () => {
   let emailElement = document.getElementById("email");
   let emailErrorElement = document.getElementById("email-error");
   let passwordElement = document.getElementById("password");
   let passwordErrorElement = document.getElementById("password-error");
   let submitElement = document.getElementById("submit");
 
-  let email = emailElement.value;
-  let password = passwordElement.value;
+  let email = emailElement.value.trim();
+  let password = passwordElement.value.trim();
+
+  // Reset errors
+  emailErrorElement.textContent = "";
+  passwordErrorElement.textContent = "";
+
+  // Validate input
   if (!validateEmail(email)) {
-    emailErrorElement.innerHTML = "Please enter a valid email";
+    emailErrorElement.textContent = "Please enter a valid email";
     return;
-  } else {
-    emailErrorElement.innerHTML = "";
   }
   if (!validatePassword(password)) {
-    passwordErrorElement.innerHTML = "Password must be at least 6 characters";
+    passwordErrorElement.textContent = "Password must be at least 6 characters";
     return;
-  } else {
-    passwordErrorElement.innerHTML = "";
   }
 
+  // Disable button to prevent multiple submissions
   submitElement.disabled = true;
 
-  fetch("http://localhost:3000/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  })
-  .then((res) => {
-    if (res.status === 201) {
-      window.location.href = "file-manager.html";
-      sessionStorage.setItem("isLogged", "true");
-    } else {
-    }
-  });
-
-  console.log(res);
-  window.location.href = "file-manager.html";
-  console.log(email, password);
+  // Send login request
+  try {
+    await fetch(`http://localhost:3000/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    }).then((res) => {
+      if (res.status === 200) {
+        window.location.href = "file-manager.html";
+        sessionStorage.setItem("isLogged", "true");
+      } else {
+        return res.json().then((data) => {
+          throw new Error(data.message || "Login failed");
+        });
+      }
+      console.log(res);
+      window.location.href = "sign-in.html";
+    });
+  } catch (error) {
+    passwordErrorElement.textContent = "An error occurred. Please try again.";
+  } finally {
+    submitElement.disabled = false; // Re-enable button
+  }
 };
 
 let register = () => {
@@ -100,7 +110,6 @@ let choosePlan = (plan) => {
       buttons[i].disabled = true;
     }
 
-    console.log(email, password, plan);
     window.location.href = "file-manager.html";
     sessionStorage.setItem("isLogged", "true");
   } else if (plan === "premium") {
@@ -123,25 +132,8 @@ let choosePlan = (plan) => {
         window.location.href = "file-manager.html";
         sessionStorage.setItem("isLogged", "true");
       } else {
-        console.log(res);
         window.location.href = "register.html";
       }
     });
-    // .then(() => {
-    //   window.location.href = "file-manager.html";
-    //   sessionStorage.setItem("isLogged", "true");
-    // });
-    // sessionStorage.setItem("isLogged", "true");
-
-    console.log(email, password, plan);
-
-    // window.location.href = "file-manager.html";
   }
 };
-
-fetch("http://localhost:3000/api/file", {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
