@@ -19,7 +19,7 @@ class UserController extends GenericController {
 
   async create(req, res) {
     try {
-      const { email} = req.body;
+      const { email } = req.body;
       // Validate email
       if (!validateEmail(email)) {
         return res.status(400).json({ message: "Invalid email" });
@@ -42,13 +42,11 @@ class UserController extends GenericController {
     try {
       const { email } = req.body;
       // Validate email
-      if (!validateEmail(email)) {
+      if (email && !validateEmail(email)) {
         return res.status(400).json({ message: "Invalid email" });
       }
 
-      const result = await this.service.update(
-        req.params.id, req.body
-      );
+      const result = await this.service.update(req.params.id, req.body);
       res.json(result);
     } catch (error) {
       res.status(500).json({ message: error.message });
