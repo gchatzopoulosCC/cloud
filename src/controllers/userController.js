@@ -46,8 +46,8 @@ class UserController extends GenericController {
         return res.status(400).json({ message: "Invalid email" });
       }
 
-      const result = await this.service.update(req.params.id, req.body);
-      res.json(result);
+      await this.service.update(req.params.id, req.body);
+      res.status(204).send();
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

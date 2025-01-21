@@ -84,7 +84,6 @@ class UserService {
     }
 
     await user.update(updateData);
-    return user;
   }
 
   async delete(id) {
