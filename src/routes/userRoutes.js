@@ -186,5 +186,7 @@ router.get("/:id", userController.getById);
 router.post("/", userController.create);
 router.put("/:id", userController.update);
 router.delete("/:id", userController.delete);
+router.put("/:id/password", userController.updatePassword);
+router.put("/:id/email", userController.updateEmail);
 
 module.exports = router;

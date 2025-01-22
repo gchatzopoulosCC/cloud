@@ -1,7 +1,6 @@
-let files = ["a", "b", "c"];
-
+let files = [];
 let file =
-  '<div class="main_section_file"><div class="file_name"><img src="../assets/icons/file.svg" alt="file" class="file_icon"/><p class="file_name_text">{filename}</p></div><div class="file_options"><img src="../assets/icons/download.svg" alt="download" class="file_option"/><img src="../assets/icons/edit.svg" alt="edit" class="file_option" onclick="editFile(event)"/><img src="../assets/icons/delete.svg" alt="delete" class="file_option" onclick="deleteFile(event)"/></div></div>';
+  '<div class="main_section_file" data-id="{id}"> <div class="file_name"> <img src="../assets/icons/file.svg" alt="file" class="file_icon" /> <p class="file_name_text">{filename}</p> <span class="file_error"></span> </div> <div class="file_extension"> <p class="file_extension_text">{type}</p> </div> <div class="file_options"> <img onclick="downloadFile(event)" src="../assets/icons/download.svg" alt="download" class="file_option" /><img src="../assets/icons/edit.svg" alt="edit" class="file_option" onclick="editFile(event)" /><img src="../assets/icons/delete.svg" alt="delete" class="file_option" onclick="deleteFile(event)" /> </div></div>';
 
 let search = () => {
   let input = document
@@ -25,9 +24,9 @@ clearSearch = () => {
   search();
 };
 
-let openUpload = () => {
+const openUpload = () => {
   let uploadHTML =
-    '<div class="load-file" id="load-file_container"> <form class="load-file__wrapper" method="post" enctype="multipart/form-data"> <div class="load-file_input"> <input type="text" id="load-file_name" placeholder="File name" class="load-file_name form-control" /> <p class="load-file_error" id="load-file_name-error"></p> </div> <div class="load-file_input"> <input type="file" id="load-file" class="load-file_file" /> <p class="load-file_error" id="load-file_file-error"></p> </div> <button class="btn btn-light btn-upload" id="load-file_upload">Upload</button> </form></div>';
+    '<div class="load-file" id="load-file_container"> <div class="load-file__wrapper"> <div class="load-file_input"> <p class="load-file_error" id="load-file_name-error"></p> </div> <div class="load-file_input"> <input type="file" id="load-file" class="load-file_file" /> <p class="load-file_error" id="load-file_file-error"></p> </div> <button class="btn btn-light btn-upload" id="load-file_upload">Upload</button> </div></div>';
   let upload = document.createElement("div");
   let temp = document.createElement("div");
   temp.innerHTML = uploadHTML;
@@ -44,69 +43,168 @@ let openUpload = () => {
   document.getElementById("main__wrapper").appendChild(upload);
 };
 
-let uploadFile = () => {
-  let name = document.getElementById("load-file_name").value;
-  if (!name) {
-    document.getElementById("load-file_name-error").innerHTML =
-      "Please enter a file name";
-    return;
-  } else {
-    document.getElementById("load-file_name-error").innerHTML = "";
-  }
+const uploadFile = () => {
   let file = document.getElementById("load-file").files[0];
   if (!file) {
-    document.getElementById("load-file_file-error").innerHTML =
+    document.getElementById("load-file_file-error").innerText =
       "Please select a file";
     return;
   } else {
-    document.getElementById("load-file_file-error").innerHTML = "";
+    document.getElementById("load-file_file-error").innerText = "";
   }
+
   document.getElementById("load-file_upload").disabled = true;
 
-  console.log(0, file);
+  let userId = JSON.parse(sessionStorage.getItem("user")).id;
+
+  let formData = new FormData();
+  formData.append("userId", userId);
+  formData.append("file", file);
+
   fetch("http://localhost:3000/api/file", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ userId: 1 }),
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data));
+    body: formData,
+  }).then((res) => {
+    if (res.status === 200 || res.status === 201) {
+      renderFiles();
+      document.getElementById("load-file_container").remove();
+    } else {
+      res.json().then((data) => {
+        document.getElementById("load-file_file-error").innerText =
+          data.message;
+        document.getElementById("load-file_upload").disabled = false;
+      });
+    }
+  });
+};
+
+const downloadFile = (event) => {
+  let id = event.target.parentElement.parentElement.dataset.id;
+  let fileNumber = [].slice
+    .call(document.getElementById("files").children)
+    .indexOf(event.target.parentElement.parentElement);
+  fetch(`http://localhost:3000/api/file/download/${id}`, {
+    method: "GET",
+  }).then((res) => {
+    res.blob().then((blob) => {
+      let url = window.URL.createObjectURL(blob);
+      let a = document.createElement("a");
+      a.href = url;
+      a.download = files[fileNumber].name;
+      a.click();
+    });
+  });
 };
 
 let editFile = (event) => {
   let names = [].slice.call(document.getElementsByClassName("file_name_text"));
-  let id = names.indexOf(
-    event.target.parentElement.parentElement.children[0].children[1]
+  let id = event.target.parentElement.parentElement.dataset.id;
+  let fileNumber = names.indexOf(
+    event.target.parentElement.parentElement.getElementsByClassName(
+      "file_name_text"
+    )[0]
   );
-  let name = names[id].innerText;
+  let name = names[fileNumber].innerText;
   let input = document.createElement("input");
   input.value = name;
   input.addEventListener("focusout", () => {
-    let p = document.createElement("p");
-    p.classList.add("file_name_text");
-    p.innerText = input.value;
-    input.replaceWith(p);
+    let fileName = input.value + files[fileNumber].fileType;
+    fetch(`http://localhost:3000/api/file/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ name: fileName }),
+    }).then((res) => {
+      if (res.status === 204) {
+        let p = document.createElement("p");
+        p.classList.add("file_name_text");
+        p.innerText = input.value;
+        input.replaceWith(p);
+      } else {
+        res.json().then((data) => {
+          event.target.parentElement.parentElement.getElementsByClassName(
+            "file_error"
+          )[0].innerText = data.message;
+          input.select();
+        });
+      }
+    });
   });
-  names[id].replaceWith(input);
+  names[fileNumber].replaceWith(input);
   input.select();
 };
+// let editFile = (event) => {
+//   let names = [].slice.call(document.getElementsByClassName("file_name_text"));
+//   let id = names.indexOf(
+//     event.target.parentElement.parentElement.children[0].children[1]
+//   );
+//   let fileId = files[id].id; // Assuming `files` is an array of file objects with an `id` property
+//   let name = names[id].innerText;
+//   let input = document.createElement("input");
+//   input.value = name;
+//   input.addEventListener("focusout", () => {
+//     let newName = input.value;
+//     fetch(`http://localhost:3000/api/file`, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ name: newName }),
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         let p = document.createElement("p");
+//         p.classList.add("file_name_text");
+//         p.innerText = data.name;
+//         input.replaceWith(p);
+//       })
+//       .catch((error) => {
+//         console.error("Error renaming file:", error);
+//       });
+//   });
+//   names[id].replaceWith(input);
+//   input.select();
+// };
 
 let deleteFile = (event) => {
-  fileElements = [].slice.call(
+  const fileElements = [].slice.call(
     document.getElementsByClassName("main_section_file")
   );
-  let id = fileElements.indexOf(event.target.parentElement.parentElement);
-  fileElements[id].remove();
+  const fileNumber = fileElements.indexOf(
+    event.target.parentElement.parentElement
+  );
+  const id = +event.target.parentElement.parentElement.dataset.id;
+
+  fetch(`http://localhost:3000/api/file/${id}`, {
+    method: "DELETE",
+  })
+    .then((res) => {
+      if (res.status === 204) {
+        fileElements[fileNumber].remove();
+      } else {
+        console.error("Error deleting file");
+      }
+    })
+    .catch((error) => {
+      console.error("Error deleting file:", error);
+    });
 };
 
 let renderFiles = () => {
-  let mainSection = document.getElementById("files");
-  for (let i = 0; i < files.length; i++) {
-    let f = file.replace("{filename}", files[i]);
-    mainSection.innerHTML += f;
-  }
+  fetch("http://localhost:3000/api/file", {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      files = data;
+      let mainSection = document.getElementById("files");
+      mainSection.innerHTML = "";
+      for (let i = 0; i < files.length; i++) {
+        let f = file
+          .replace("{filename}", files[i].name.replace(files[i].fileType, ""))
+          .replace("{id}", files[i].id)
+          .replace("{type}", files[i].fileType);
+        mainSection.innerHTML += f;
+      }
+    });
 };
 
 renderFiles();

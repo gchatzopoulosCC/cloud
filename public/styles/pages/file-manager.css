@@ -156,12 +156,18 @@
   border-bottom: 1px solid #000;
   padding: 8px 0 8px 60px;
   margin-bottom: -2px;
+  display: flex;
 }
 
 .content_title > h5 {
+  margin-right: calc(50% - 95px);
   font-size: 1.05rem;
   font-weight: 500;
   line-height: 1;
+}
+
+.content_title > h5:last-child {
+  margin-right: 0;
 }
 
 .main_section_files {
@@ -173,10 +179,10 @@
 .main_section_file {
   border-bottom: 1px solid #000;
   justify-content: space-between;
-  padding: 8px 0;
   flex-direction: row;
   margin-bottom: 18px;
   align-items: center;
+  padding: 8px 0;
   display: flex;
   width: 100%;
 }
@@ -187,8 +193,16 @@
 
 .file_name {
   flex-direction: row;
+  position: relative;
   font-size: 1rem;
   display: flex;
+}
+
+.file_error {
+  position: absolute;
+  color: #ff0000;
+  bottom: -14px;
+  left: 48px;
 }
 
 .file_icon {
@@ -196,9 +210,18 @@
   margin-left: 4px;
 }
 
+.file_extension {
+  position: absolute;
+  margin-right: 80px;
+  margin-left: 80px;
+  display: flex;
+  left: 50%;
+}
+
 .file_options {
   flex-direction: row;
   margin-right: 88px;
+  margin-left: auto;
   display: flex;
 }
 

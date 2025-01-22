@@ -1,5 +1,6 @@
 const GenericController = require("./genericController");
 const { minioClient, bucketName } = require("../minio");
+const path = require("path");
 
 class FilesController extends GenericController {
   constructor(service) {
@@ -27,8 +28,17 @@ class FilesController extends GenericController {
           message: "File required!",
         });
       }
-      const result = await this.service.upload(userId, file);
-      res.json(result);
+      if (
+        ![".jpg", ".png", ".pdf", ".docx", ".txt", ".xlsx"].includes(
+          path.extname(file.originalname)
+        )
+      ) {
+        return res.status(400).send({
+          message: "Invalid file type!",
+        });
+      }
+      await this.service.upload(userId, file);
+      res.status(201).send();
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -69,8 +79,8 @@ class FilesController extends GenericController {
 
   async delete(req, res) {
     try {
-      const result = await this.service.delete(req.params.id);
-      res.json(result);
+      await this.service.delete(req.params.id);
+      res.status(204).send();
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -105,6 +115,7 @@ class FilesController extends GenericController {
         "Content-Length": stat.size,
         "Content-Disposition": `attachment; filename=${file.name}`,
       };
+
       res.set({ headers });
 
       // Pipe the file to the response
