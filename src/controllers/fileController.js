@@ -70,8 +70,8 @@ class FilesController extends GenericController {
           message: "A file with the same name already exists!",
         });
       }
-      const result = await this.service.changeName(req.params.id, name);
-      res.json(result);
+      await this.service.changeName(req.params.id, name);
+      res.status(204).send();
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

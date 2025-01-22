@@ -82,12 +82,8 @@ const filesCtrl = new filesController(service);
  *                 type: string
  *                 example: logo.png
  *     responses:
- *       '200':
- *         description: File details
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/File'
+ *       '204':
+ *         description: File name changed
  *       '400':
  *         description: Validation error
  *       '404':

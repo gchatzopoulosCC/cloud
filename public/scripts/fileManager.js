@@ -79,16 +79,16 @@ const uploadFile = () => {
 };
 
 const downloadFile = (event) => {
-  let id = event.target.parentElement.parentElement.dataset.id;
-  let fileNumber = [].slice
+  const id = event.target.parentElement.parentElement.dataset.id;
+  const fileNumber = [].slice
     .call(document.getElementById("files").children)
     .indexOf(event.target.parentElement.parentElement);
   fetch(`http://localhost:3000/api/file/download/${id}`, {
     method: "GET",
   }).then((res) => {
     res.blob().then((blob) => {
-      let url = window.URL.createObjectURL(blob);
-      let a = document.createElement("a");
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
       a.href = url;
       a.download = files[fileNumber].name;
       a.click();
@@ -96,75 +96,51 @@ const downloadFile = (event) => {
   });
 };
 
-let editFile = (event) => {
-  let names = [].slice.call(document.getElementsByClassName("file_name_text"));
-  let id = event.target.parentElement.parentElement.dataset.id;
-  let fileNumber = names.indexOf(
+const editFile = (event) => {
+  const names = [].slice.call(document.getElementsByClassName("file_name_text"));
+  const id = event.target.parentElement.parentElement.dataset.id;
+  const fileNumber = names.indexOf(
     event.target.parentElement.parentElement.getElementsByClassName(
       "file_name_text"
     )[0]
   );
-  let name = names[fileNumber].innerText;
-  let input = document.createElement("input");
+  const name = names[fileNumber].innerText;
+  const input = document.createElement("input");
   input.value = name;
+
   input.addEventListener("focusout", () => {
-    let fileName = input.value + files[fileNumber].fileType;
+    const fileName = input.value + files[fileNumber].fileType;
     fetch(`http://localhost:3000/api/file/${id}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ name: fileName }),
     }).then((res) => {
       if (res.status === 204) {
-        let p = document.createElement("p");
+        const p = document.createElement("p");
         p.classList.add("file_name_text");
         p.innerText = input.value;
         input.replaceWith(p);
       } else {
         res.json().then((data) => {
-          event.target.parentElement.parentElement.getElementsByClassName(
+          let errorElement = event.target.parentElement.parentElement.getElementsByClassName(
             "file_error"
-          )[0].innerText = data.message;
+          )[0];
+          if (errorElement) {
+            errorElement.innerText = data.message;
+          }
           input.select();
         });
       }
     });
   });
+
   names[fileNumber].replaceWith(input);
   input.select();
 };
-// let editFile = (event) => {
-//   let names = [].slice.call(document.getElementsByClassName("file_name_text"));
-//   let id = names.indexOf(
-//     event.target.parentElement.parentElement.children[0].children[1]
-//   );
-//   let fileId = files[id].id; // Assuming `files` is an array of file objects with an `id` property
-//   let name = names[id].innerText;
-//   let input = document.createElement("input");
-//   input.value = name;
-//   input.addEventListener("focusout", () => {
-//     let newName = input.value;
-//     fetch(`http://localhost:3000/api/file`, {
-//       method: "PUT",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ name: newName }),
-//     })
-//       .then((res) => res.json())
-//       .then((data) => {
-//         let p = document.createElement("p");
-//         p.classList.add("file_name_text");
-//         p.innerText = data.name;
-//         input.replaceWith(p);
-//       })
-//       .catch((error) => {
-//         console.error("Error renaming file:", error);
-//       });
-//   });
-//   names[id].replaceWith(input);
-//   input.select();
-// };
 
-let deleteFile = (event) => {
+const deleteFile = (event) => {
   const fileElements = [].slice.call(
     document.getElementsByClassName("main_section_file")
   );
@@ -188,14 +164,14 @@ let deleteFile = (event) => {
     });
 };
 
-let renderFiles = () => {
+const renderFiles = () => {
   fetch("http://localhost:3000/api/file", {
     method: "GET",
   })
     .then((res) => res.json())
     .then((data) => {
       files = data;
-      let mainSection = document.getElementById("files");
+      const mainSection = document.getElementById("files");
       mainSection.innerHTML = "";
       for (let i = 0; i < files.length; i++) {
         let f = file
