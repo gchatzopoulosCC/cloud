@@ -37,7 +37,7 @@ const logIn = async () => {
       res.json().then((data) => {
         if (res.status === 200 || res.status === 201) {
           console.log(data);
-          sessionStorage.setItem("user", JSON.stringify(data));
+          sessionStorage.setItem("user", JSON.stringify(data.user));
           sessionStorage.setItem("isLogged", "true");
           window.location.href = "file-manager.html";
         } else {
@@ -96,10 +96,11 @@ const register = async () => {
   }).then(async (res) => {
     // Validate the response
     if (res.status !== 201) {
-      // window.location.href = "register.html";
-      emailErrorElement.innerText = res.message.email;
-      passwordErrorElement.innerText = res.message.password;
-      submitElement.disabled = false;
+      res.json().then((data) => {
+        emailErrorElement.innerText = data.message.email;
+        passwordErrorElement.innerText = data.message.password;
+        submitElement.disabled = false;
+      });
     } else {
       // Redirect to the plans page
       await fetch(`http://localhost:3000/auth/login`, {

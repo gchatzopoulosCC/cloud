@@ -86,6 +86,24 @@ class UserService {
     await user.update(updateData);
   }
 
+  async updatePassword(id, { oldPassword, newPassword }) {
+    const user = await this.getById(id);
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordValid) {
+      throw new Error("Invalid password");
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await userModel.update({ password: hashedPassword }, { where: { id } });
+  }
+
+  async updateEmail(id, { oldEmail, email }) {
+    const user = await this.getById(id);
+    if (user.email !== oldEmail) {
+      throw new Error("Invalid old email");
+    }
+    await userModel.update({ email }, { where: { id } });
+  }
+
   async delete(id) {
     return await userModel.destroy({ where: { id } });
   }

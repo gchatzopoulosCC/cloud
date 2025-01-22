@@ -4,28 +4,48 @@ let changePassword = () => {
   let oldPasswordError = document.getElementById("old-password-error");
   let newPasswordError = document.getElementById("password-error");
 
-  if (!validateOldPassword(oldPassword)) {
-    oldPasswordError.innerHTML = "Please enter a valid password";
+  if (!validatePassword(oldPassword)) {
+    oldPasswordError.innerHTML = "Password must be at least 8 characters";
     return;
   } else {
     oldPasswordError.innerHTML = "";
   }
 
   if (!validatePassword(newPassword)) {
-    newPasswordError.innerHTML = "Password must be at least 6 characters";
+    newPasswordError.innerHTML = "Password must be at least 8 characters";
     return;
   } else {
     newPasswordError.innerHTML = "";
   }
+
+  if (oldPassword === newPassword) {
+    newPasswordError.innerHTML =
+      "New password must be different from old password";
+    return;
+  }
+
+  let userId = JSON.parse(sessionStorage.getItem("user")).id;
+
+  fetch(`http://localhost:3000/api/user/${userId}/password`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    }),
+  }).then((res) => {
+    if (res.status === 204) {
+      logout();
+    } else {
+      oldPasswordError.innerHTML = "Old password is incorrect";
+    }
+  });
 };
 
 let validatePassword = (password) => {
-  return password.length >= 6;
-};
-
-let validateOldPassword = (password) => {
-  // TODO
-  return true;
+  return password.length >= 8;
 };
 
 let changeEmail = () => {
@@ -34,7 +54,7 @@ let changeEmail = () => {
   let newEmail = document.getElementById("email").value;
   let newEmailError = document.getElementById("email-error");
 
-  if (!validateOldEmail(oldEmail)) {
+  if (!validateEmail(oldEmail)) {
     oldEmailError.innerHTML = "Please enter a valid email";
     return;
   } else {
@@ -47,6 +67,30 @@ let changeEmail = () => {
   } else {
     newEmailError.innerHTML = "";
   }
+
+  if (oldEmail === newEmail) {
+    newEmailError.innerHTML = "New email must be different from old email";
+    return;
+  }
+
+  let userId = JSON.parse(sessionStorage.getItem("user")).id;
+
+  fetch(`http://localhost:3000/api/user/${userId}/email`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      oldEmail: oldEmail,
+      email: newEmail,
+    }),
+  }).then((res) => {
+    if (res.status === 204) {
+      logout();
+    } else {
+      oldEmailError.innerHTML = "Please enter a valid email";
+    }
+  });
 };
 
 let validateEmail = (email) => {
@@ -55,14 +99,22 @@ let validateEmail = (email) => {
   );
 };
 
-let validateOldEmail = (email) => {
-  // TODO
-  return true;
-};
-
 let deleteAccount = () => {
-  let confirm = document.getElementById("confirm-delete-account").value;
-  let confirmError = document.getElementById("confirm-delete-account-error");
+  let confirm = document.getElementById("delete-input").value;
+
+  if (confirm !== "DELETE") {
+    return;
+  }
+
+  let userId = JSON.parse(sessionStorage.getItem("user")).id;
+
+  fetch(`http://localhost:3000/api/user/${userId}`, {
+    method: "DELETE",
+  }).then((res) => {
+    if (res.status === 204) {
+      logout();
+    }
+  });
 };
 
 let logout = async () => {
@@ -74,7 +126,8 @@ let logout = async () => {
       },
     });
     sessionStorage.removeItem("isLogged");
-    window.location.href = "index.html";
+    sessionStorage.removeItem("user");
+    window.top.location.reload();
   } catch (error) {
     console.log(error);
   }
